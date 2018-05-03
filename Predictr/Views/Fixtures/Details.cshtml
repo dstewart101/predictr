@@ -1,0 +1,54 @@
+﻿@model Predictr.Models.Fixture
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Fixture</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FixtureDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FixtureDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeTeamId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HomeTeamId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HomeScore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AwayTeamId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AwayTeamId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AwayTeamScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AwayTeamScore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResultId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

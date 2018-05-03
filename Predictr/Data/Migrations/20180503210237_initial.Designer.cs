@@ -11,9 +11,10 @@ using System;
 namespace Predictr.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180503210237_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,28 +180,6 @@ namespace Predictr.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Predictr.Models.Fixture", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AwayTeamId");
-
-                    b.Property<int>("AwayTeamScore");
-
-                    b.Property<DateTime>("FixtureDateTime");
-
-                    b.Property<int>("HomeScore");
-
-                    b.Property<int>("HomeTeamId");
-
-                    b.Property<int>("ResultId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fixture");
-                });
-
             modelBuilder.Entity("Predictr.Models.Team", b =>
                 {
                     b.Property<int>("Id")
@@ -210,7 +189,7 @@ namespace Predictr.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
