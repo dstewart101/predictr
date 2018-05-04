@@ -22,7 +22,7 @@ namespace Predictr.Controllers
         // GET: Fixtures
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fixture.ToListAsync());
+            return View(await _context.Fixtures.ToListAsync());
         }
 
         // GET: Fixtures/Details/5
@@ -33,7 +33,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixture
+            var fixture = await _context.Fixtures
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (fixture == null)
             {
@@ -73,7 +73,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixture.SingleOrDefaultAsync(m => m.Id == id);
+            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
             if (fixture == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixture
+            var fixture = await _context.Fixtures
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (fixture == null)
             {
@@ -139,15 +139,15 @@ namespace Predictr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fixture = await _context.Fixture.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Fixture.Remove(fixture);
+            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Fixtures.Remove(fixture);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FixtureExists(int id)
         {
-            return _context.Fixture.Any(e => e.Id == id);
+            return _context.Fixtures.Any(e => e.Id == id);
         }
     }
 }

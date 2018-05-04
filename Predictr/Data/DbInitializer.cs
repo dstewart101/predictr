@@ -1,13 +1,22 @@
 ﻿using Predictr.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
-public class DataSeeder
+namespace Predictr.Data
 {
-    public static void SeedCountries(Microsoft.EntityFrameworkCore.DbContext context)
+    public static class DbInitializer
     {
-            var teams = new List<Team>
+        public static void Initialize(ApplicationDbContext context)
+        {
+            context.Database.EnsureCreated();
+
+            // Look for any students.
+            if (!context.Teams.Any())
             {
-                new Team { Name = "Russia" },
+                var teams = new Team[]
+            {
+            new Team { Name = "Russia" },
                 new Team { Name = "Egypt" },
                 new Team { Name = "Saudi Arabia" },
                 new Team { Name = "Uruguay" },
@@ -38,9 +47,34 @@ public class DataSeeder
                 new Team { Name = "Columbia" },
                 new Team { Name = "Poland" },
                 new Team { Name = "Japan" },
-                new Team { Name = "Senegal" },
+                new Team { Name = "Senegal" }
             };
-            context.AddRange(teams);
-            context.SaveChanges();
+                foreach (Team t in teams)
+                {
+                    context.Teams.Add(t);
+                }
+                context.SaveChanges();
+            }
+
+
+
+
+            // group fixtures
+            if (!context.Fixtures.Any()) {
+                var fixtures = new Fixture[] {
+
+                    new Fixture { HomeTeamId = 1, AwayTeamId = 3, FixtureDateTime = Convert.ToDateTime("2018-06-14 16:00:00")},
+                    new Fixture { HomeTeamId = 2, AwayTeamId = 4, FixtureDateTime = Convert.ToDateTime("2018-06-15 13:00:00")},
+                    new Fixture { HomeTeamId = 5, AwayTeamId = 7, FixtureDateTime = Convert.ToDateTime("2018-06-15 16:00:00")},
+                    new Fixture { HomeTeamId = 6, AwayTeamId = 8, FixtureDateTime = Convert.ToDateTime("2018-06-15 19:00:00")},
+                };
+
+                foreach (Fixture f in fixtures)
+                {
+                    context.Fixtures.Add(f);
+                }
+                context.SaveChanges();
+            }
         }
+    }
 }
