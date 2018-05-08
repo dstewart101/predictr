@@ -11,6 +11,5 @@ namespace Predictr.ViewModels
         public String AwayTeam { get; set; }
         public int HomeScore { get; set; }
         public int AwayScore { get; set; }
-        public int FixtureId { get; set; }
     }
 }

@@ -46,17 +46,16 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Create
-        public IActionResult Create(int id, VM_CreatePrediction prediction)
+        public IActionResult Create(int id)
         {
 
             int _fixtureId = id;
-            VM_CreatePrediction _thisPrediction = prediction;
+            VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
 
             var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
 
             _thisPrediction.HomeTeam = fixture.Home;
             _thisPrediction.AwayTeam = fixture.Away;
-            _thisPrediction.FixtureId = id;
 
             return View(_thisPrediction);
         }
@@ -66,7 +65,7 @@ namespace Predictr.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VM_CreatePrediction prediction)
+        public async Task<IActionResult> Create(VM_CreatePrediction prediction, int id)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +74,7 @@ namespace Predictr.Controllers
                 Prediction _fullPrediction = new Prediction();
 
                 _fullPrediction.ApplicationUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                //_fullPrediction.FixtureId = id;
+                _fullPrediction.FixtureId = id;
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
 
