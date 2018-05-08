@@ -10,9 +10,6 @@
     <thead>
         <tr>
             <th>
-                Group
-            </th>
-            <th>
                 Date/Time
             </th>
             <th>
@@ -21,7 +18,6 @@
             <th>
                 H.Score
             </th>
-
             <th>
                 A.Score
             </th>
@@ -29,43 +25,42 @@
                 Away
             </th>
             <th>
-                Result
+                Actual Result
             </th>
-
+            <th>
+                Points
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Predictions)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Group)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FixtureDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Home)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HomeScore)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Home)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomeScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwayScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Away)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Result)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Points)
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.AwayTeamScore)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Away)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Result)
-                </td>
 
-                <td>
-                    <a asp-area="" asp-controller="Prediction" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
-                </td>
-            </tr>
+        </tr>
         }
     </tbody>
 </table>
@@ -88,7 +83,9 @@
             <th>
                 H.Score
             </th>
-
+            <th>
+                vs
+            </th>
             <th>
                 A.Score
             </th>
@@ -105,34 +102,36 @@
     <tbody>
         @foreach (var item in Model.UnPredictedFixtures)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Group)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FixtureDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Home)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HomeScore)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FixtureDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Home)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomeScore)
+            </td>
+            <th>
+                vs
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwayScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Away)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Result)
+            </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.AwayTeamScore)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Away)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Result)
-                </td>
-
-                <td>
-                    <a asp-area="" asp-controller="Prediction" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
-                </td>
-            </tr>
+            <td>
+                <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

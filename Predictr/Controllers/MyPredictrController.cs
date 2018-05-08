@@ -45,7 +45,7 @@ namespace Predictr.Controllers
 
             }
 
-            vm.UnPredictedFixtures = allFixtures.ToList();
+            vm.UnPredictedFixtures = allFixtures.OrderBy(p => p.FixtureDateTime).ToList();
 
 
 

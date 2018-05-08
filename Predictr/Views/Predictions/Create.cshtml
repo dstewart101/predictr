@@ -1,4 +1,4 @@
-﻿@model Predictr.Models.Prediction
+﻿@model Predictr.ViewModels.VM_CreatePrediction
 
 @{
     ViewData["Title"] = "Create";
@@ -13,34 +13,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FixtureId" class="control-label"></label>
-                <input asp-for="FixtureId" class="form-control" />
-                <span asp-validation-for="FixtureId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApplicationUser" class="control-label"></label>
-                <input asp-for="ApplicationUser" class="form-control" />
-                <span asp-validation-for="ApplicationUser" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HomeScore" class="control-label"></label>
+                <label asp-for="HomeTeam" class="control-label">@Html.DisplayFor(model => model.HomeTeam)</label>
                 <input asp-for="HomeScore" class="form-control" />
                 <span asp-validation-for="HomeScore" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AwayScore" class="control-label"></label>
+                <label asp-for="AwayTeam" class="control-label">@Html.DisplayFor(model => model.AwayTeam)</label>
                 <input asp-for="AwayScore" class="form-control" />
                 <span asp-validation-for="AwayScore" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ModifierId" class="control-label"></label>
-                <input asp-for="ModifierId" class="form-control" />
-                <span asp-validation-for="ModifierId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Points" class="control-label"></label>
-                <input asp-for="Points" class="form-control" />
-                <span asp-validation-for="Points" class="text-danger"></span>
+
+                <input asp-for="FixtureId" value=@Html.DisplayFor(model => model.FixtureId) class="form-control" type="hidden" />
+                
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -50,7 +35,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="MyPredictr" asp-action="Index">Back to MyPredictr</a>
 </div>
 
 @section Scripts {

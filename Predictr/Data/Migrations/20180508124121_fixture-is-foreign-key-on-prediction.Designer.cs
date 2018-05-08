@@ -11,9 +11,10 @@ using System;
 namespace Predictr.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180508124121_fixture-is-foreign-key-on-prediction")]
+    partial class fixtureisforeignkeyonprediction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +187,7 @@ namespace Predictr.Data.Migrations
 
                     b.Property<string>("Away");
 
-                    b.Property<int?>("AwayScore");
+                    b.Property<int?>("AwayTeamScore");
 
                     b.Property<DateTime>("FixtureDateTime");
 

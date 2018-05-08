@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
 using Predictr.Models;
+using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
@@ -44,9 +46,19 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Create
-        public IActionResult Create()
+        public IActionResult Create(int id, VM_CreatePrediction prediction)
         {
-            return View();
+
+            int _fixtureId = id;
+            VM_CreatePrediction _thisPrediction = prediction;
+
+            var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
+
+            _thisPrediction.HomeTeam = fixture.Home;
+            _thisPrediction.AwayTeam = fixture.Away;
+            _thisPrediction.FixtureId = id;
+
+            return View(_thisPrediction);
         }
 
         // POST: Predictions/Create
@@ -54,11 +66,22 @@ namespace Predictr.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FixtureId,ApplicationUser,HomeScore,AwayScore,ModifierId,Points")] Prediction prediction)
+        public async Task<IActionResult> Create(VM_CreatePrediction prediction)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(prediction);
+                VM_CreatePrediction _prediction = prediction;
+
+                Prediction _fullPrediction = new Prediction();
+
+                _fullPrediction.ApplicationUser = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //_fullPrediction.FixtureId = id;
+                _fullPrediction.HomeScore = prediction.HomeScore;
+                _fullPrediction.AwayScore = prediction.AwayScore;
+
+
+
+                _context.Add(_fullPrediction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

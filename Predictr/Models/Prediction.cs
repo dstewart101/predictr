@@ -14,5 +14,7 @@ namespace Predictr.Models
         public int AwayScore { get; set; }
         public int? ModifierId { get; set; }
         public int Points { get; set; }
+
+        public virtual Fixture Fixture { get; set; }
     }
 }

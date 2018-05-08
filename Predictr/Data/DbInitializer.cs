@@ -9,7 +9,7 @@ namespace Predictr.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             // Look for any students.
@@ -64,7 +64,37 @@ namespace Predictr.Data
             if (!context.Fixtures.Any()) {
                 var fixtures = new Fixture[] {
 
-                    new Fixture { Home="Russia", Away="Saudi Arabia", FixtureDateTime = Convert.ToDateTime("2018-06-14 16:00:00")}
+                    new Fixture { Group="A", Home="Russia", Away="Saudi Arabia", FixtureDateTime = Convert.ToDateTime("2018-06-14 16:00:00")},
+                    
+                    new Fixture { Group="A", Home="Egypt", Away="Uruguay", FixtureDateTime = Convert.ToDateTime("2018-06-15 13:00:00")},
+                    new Fixture { Group="B", Home="Morocco", Away="Iran", FixtureDateTime = Convert.ToDateTime("2018-06-15 16:00:00")},
+                    new Fixture { Group="B", Home="Portugal", Away="Spain", FixtureDateTime = Convert.ToDateTime("2018-06-15 19:00:00")},
+
+                    new Fixture { Group="C", Home="France", Away="Australia", FixtureDateTime = Convert.ToDateTime("2018-06-16 11:00:00")},
+                    new Fixture { Group="C", Home="Argentina", Away="Iceland", FixtureDateTime = Convert.ToDateTime("2018-06-16 14:00:00")},
+                    new Fixture { Group="D", Home="Peru", Away="Denmark", FixtureDateTime = Convert.ToDateTime("2018-06-16 17:00:00")},
+                    new Fixture { Group="D", Home="Croatia", Away="Nigeria", FixtureDateTime = Convert.ToDateTime("2018-06-16 20:00:00")},
+
+                    new Fixture { Group="E", Home="Costa Rica", Away="Serbia", FixtureDateTime = Convert.ToDateTime("2018-06-17 13:00:00")},
+                    new Fixture { Group="E", Home="Germany", Away="Mexico", FixtureDateTime = Convert.ToDateTime("2018-06-17 16:00:00")},
+                    new Fixture { Group="F", Home="Brazil", Away="Switzerland", FixtureDateTime = Convert.ToDateTime("2018-06-17 19:00:00")},
+
+                    new Fixture { Group="F", Home="Sweden", Away="South Korea", FixtureDateTime = Convert.ToDateTime("2018-06-18 13:00:00")},
+                    new Fixture { Group="G", Home="Belgium", Away="Panama", FixtureDateTime = Convert.ToDateTime("2018-06-18 16:00:00")},
+                    new Fixture { Group="G", Home="Tunisia", Away="England", FixtureDateTime = Convert.ToDateTime("2018-06-18 19:00:00")},
+
+                    new Fixture { Group="H", Home="Columbia", Away="Japan", FixtureDateTime = Convert.ToDateTime("2018-06-19 13:00:00")},
+                    new Fixture { Group="H", Home="Poland", Away="Senegal", FixtureDateTime = Convert.ToDateTime("2018-06-19 16:00:00")},
+                    new Fixture { Group="A", Home="Russia", Away="Egypt", FixtureDateTime = Convert.ToDateTime("2018-06-19 19:00:00")},
+
+                    new Fixture { Group="A",  Home="Portugal", Away="Morocco", FixtureDateTime = Convert.ToDateTime("2018-06-20 13:00:00")},
+                    new Fixture { Group="B", Home="Uruguay", Away="Saudi Arabia", FixtureDateTime = Convert.ToDateTime("2018-06-20 16:00:00")},
+                    new Fixture { Group="B", Home="Iran", Away="Spain", FixtureDateTime = Convert.ToDateTime("2018-06-20 19:00:00")},
+
+                    new Fixture { Group="D", Home="Denmark", Away="Australia", FixtureDateTime = Convert.ToDateTime("2018-06-21 13:00:00")},
+                    new Fixture { Group="C", Home="France", Away="Peru", FixtureDateTime = Convert.ToDateTime("2018-06-21 16:00:00")},
+                    new Fixture { Group="C", Home="Argentina", Away="Croatia", FixtureDateTime = Convert.ToDateTime("2018-06-21 19:00:00")}
+
                 };
 
                 foreach (Fixture f in fixtures)

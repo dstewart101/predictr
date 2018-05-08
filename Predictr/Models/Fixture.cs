@@ -12,7 +12,7 @@ namespace Predictr.Models
         public String Home { get; set; }
         public int? HomeScore { get; set; }
         public String Away { get; set; }
-        public int? AwayTeamScore { get; set; }
+        public int? AwayScore { get; set; }
         public String Result { get; set; }
         public String Group { get; set; }
     }
