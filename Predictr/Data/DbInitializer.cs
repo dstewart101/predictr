@@ -64,10 +64,7 @@ namespace Predictr.Data
             if (!context.Fixtures.Any()) {
                 var fixtures = new Fixture[] {
 
-                    new Fixture { HomeTeamId = 1, AwayTeamId = 3, FixtureDateTime = Convert.ToDateTime("2018-06-14 16:00:00")},
-                    new Fixture { HomeTeamId = 2, AwayTeamId = 4, FixtureDateTime = Convert.ToDateTime("2018-06-15 13:00:00")},
-                    new Fixture { HomeTeamId = 5, AwayTeamId = 7, FixtureDateTime = Convert.ToDateTime("2018-06-15 16:00:00")},
-                    new Fixture { HomeTeamId = 6, AwayTeamId = 8, FixtureDateTime = Convert.ToDateTime("2018-06-15 19:00:00")},
+                    new Fixture { Home="Russia", Away="Saudi Arabia", FixtureDateTime = Convert.ToDateTime("2018-06-14 16:00:00")}
                 };
 
                 foreach (Fixture f in fixtures)

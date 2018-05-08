@@ -11,9 +11,10 @@ using System;
 namespace Predictr.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180505104410_fixtures-teams-and-groups")]
+    partial class fixturesteamsandgroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,45 +185,27 @@ namespace Predictr.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Away");
+                    b.Property<int>("AwayTeamId");
 
-                    b.Property<int?>("AwayTeamScore");
+                    b.Property<int>("AwayTeamScore");
 
                     b.Property<DateTime>("FixtureDateTime");
 
                     b.Property<string>("Group");
 
-                    b.Property<string>("Home");
-
-                    b.Property<int?>("HomeScore");
-
-                    b.Property<string>("Result");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fixtures");
-                });
-
-            modelBuilder.Entity("Predictr.Models.Prediction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUser");
-
-                    b.Property<int>("AwayScore");
-
-                    b.Property<int>("FixtureId");
-
                     b.Property<int>("HomeScore");
 
-                    b.Property<int?>("ModifierId");
+                    b.Property<int>("HomeTeamId");
 
-                    b.Property<int>("Points");
+                    b.Property<int>("ResultId");
+
+                    b.Property<int?>("TeamId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Predictions");
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Fixtures");
                 });
 
             modelBuilder.Entity("Predictr.Models.Team", b =>
@@ -280,6 +263,13 @@ namespace Predictr.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Predictr.Models.Fixture", b =>
+                {
+                    b.HasOne("Predictr.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId");
                 });
 #pragma warning restore 612, 618
         }

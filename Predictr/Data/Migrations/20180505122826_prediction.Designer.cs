@@ -11,9 +11,10 @@ using System;
 namespace Predictr.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180505122826_prediction")]
+    partial class prediction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,7 +223,7 @@ namespace Predictr.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Predictions");
+                    b.ToTable("Prediction");
                 });
 
             modelBuilder.Entity("Predictr.Models.Team", b =>
