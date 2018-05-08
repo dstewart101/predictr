@@ -12,54 +12,65 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FixtureDateTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.HomeTeamId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.HomeScore)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AwayTeamId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AwayTeamScore)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ResultId)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Home)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomeScore)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.AwayTeamScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Away)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Result)
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FixtureDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HomeTeamId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HomeScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwayTeamId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwayTeamScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResultId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FixtureDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Home)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeScore)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AwayTeamScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Away)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

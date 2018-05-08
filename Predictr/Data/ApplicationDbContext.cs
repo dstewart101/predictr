@@ -26,5 +26,7 @@ namespace Predictr.Data
         public DbSet<Predictr.Models.Team> Teams { get; set; }
 
         public DbSet<Predictr.Models.Fixture> Fixtures { get; set; }
+
+        public DbSet<Predictr.Models.Prediction> Predictions { get; set; }
     }
 }

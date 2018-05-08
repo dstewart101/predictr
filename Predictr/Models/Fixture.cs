@@ -9,10 +9,11 @@ namespace Predictr.Models
     {
         public int Id { get; set; }
         public DateTime FixtureDateTime { get; set; }
-        public int HomeTeamId { get; set; }
-        public int HomeScore { get; set; }
-        public int AwayTeamId { get; set; }
-        public int AwayTeamScore { get; set; }
-        public int ResultId { get; set; }
+        public String Home { get; set; }
+        public int? HomeScore { get; set; }
+        public String Away { get; set; }
+        public int? AwayTeamScore { get; set; }
+        public String Result { get; set; }
+        public String Group { get; set; }
     }
 }

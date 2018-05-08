@@ -1,0 +1,54 @@
+﻿@model Predictr.Models.Prediction
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Prediction</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FixtureId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FixtureId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HomeScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HomeScore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AwayScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AwayScore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifierId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifierId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Points)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Points)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

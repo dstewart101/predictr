@@ -10,22 +10,22 @@ using Predictr.Models;
 
 namespace Predictr.Controllers
 {
-    public class FixturesController : Controller
+    public class PredictionsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FixturesController(ApplicationDbContext context)
+        public PredictionsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Fixtures
+        // GET: Predictions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fixtures.ToListAsync());
+            return View(await _context.Predictions.ToListAsync());
         }
 
-        // GET: Fixtures/Details/5
+        // GET: Predictions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixtures
+            var prediction = await _context.Predictions
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (fixture == null)
+            if (prediction == null)
             {
                 return NotFound();
             }
 
-            return View(fixture);
+            return View(prediction);
         }
 
-        // GET: Fixtures/Create
+        // GET: Predictions/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Fixtures/Create
+        // POST: Predictions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayTeamScore,Result,Group")] Fixture fixture)
+        public async Task<IActionResult> Create([Bind("Id,FixtureId,ApplicationUser,HomeScore,AwayScore,ModifierId,Points")] Prediction prediction)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(fixture);
+                _context.Add(prediction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(fixture);
+            return View(prediction);
         }
 
-        // GET: Fixtures/Edit/5
+        // GET: Predictions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
-            if (fixture == null)
+            var prediction = await _context.Predictions.SingleOrDefaultAsync(m => m.Id == id);
+            if (prediction == null)
             {
                 return NotFound();
             }
-            return View(fixture);
+            return View(prediction);
         }
 
-        // POST: Fixtures/Edit/5
+        // POST: Predictions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayTeamScore,Result,Group")] Fixture fixture)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FixtureId,ApplicationUser,HomeScore,AwayScore,ModifierId,Points")] Prediction prediction)
         {
-            if (id != fixture.Id)
+            if (id != prediction.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Predictr.Controllers
             {
                 try
                 {
-                    _context.Update(fixture);
+                    _context.Update(prediction);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FixtureExists(fixture.Id))
+                    if (!PredictionExists(prediction.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Predictr.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(fixture);
+            return View(prediction);
         }
 
-        // GET: Fixtures/Delete/5
+        // GET: Predictions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var fixture = await _context.Fixtures
+            var prediction = await _context.Predictions
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (fixture == null)
+            if (prediction == null)
             {
                 return NotFound();
             }
 
-            return View(fixture);
+            return View(prediction);
         }
 
-        // POST: Fixtures/Delete/5
+        // POST: Predictions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Fixtures.Remove(fixture);
+            var prediction = await _context.Predictions.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Predictions.Remove(prediction);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FixtureExists(int id)
+        private bool PredictionExists(int id)
         {
-            return _context.Fixtures.Any(e => e.Id == id);
+            return _context.Predictions.Any(e => e.Id == id);
         }
     }
 }
