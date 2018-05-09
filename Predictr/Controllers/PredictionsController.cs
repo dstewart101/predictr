@@ -82,7 +82,7 @@ namespace Predictr.Controllers
 
                 _context.Add(_fullPrediction);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "MyPredictr");
             }
             return View(prediction);
         }
