@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
 using Predictr.Models;
+using Predictr.Services;
+using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
@@ -56,7 +58,7 @@ namespace Predictr.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayTeamScore,Result,Group")] Fixture fixture)
+        public async Task<IActionResult> Create([Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayScore,Result,Group")] Fixture fixture)
         {
             if (ModelState.IsValid)
             {
@@ -81,7 +83,18 @@ namespace Predictr.Controllers
             {
                 return NotFound();
             }
-            return View(fixture);
+
+            var vm_fixture = new VM_EditFixture();
+            vm_fixture.Home = fixture.Home;
+            vm_fixture.Away = fixture.Away;
+            vm_fixture.HomeScore = fixture.HomeScore;
+            vm_fixture.AwayScore = fixture.AwayScore;
+            vm_fixture.FixtureDateTime = fixture.FixtureDateTime;
+            vm_fixture.Group = fixture.Group;
+
+
+
+            return View(vm_fixture);
         }
 
         // POST: Fixtures/Edit/5
@@ -90,9 +103,15 @@ namespace Predictr.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayTeamScore,Result,Group")] Fixture fixture)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, HomeScore, AwayScore")] VM_EditFixture fixture)
         {
-            if (id != fixture.Id)
+
+            
+            Boolean scoreHasChanged = false;
+
+            var actualFixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (id != actualFixture.Id)
             {
                 return NotFound();
             }
@@ -101,12 +120,50 @@ namespace Predictr.Controllers
             {
                 try
                 {
-                    _context.Update(fixture);
-                    await _context.SaveChangesAsync();
+
+                    if ((fixture.HomeScore != actualFixture.HomeScore) || fixture.AwayScore != actualFixture.AwayScore)
+                    {
+                        scoreHasChanged = true;
+                    }
+
+                    actualFixture.HomeScore = fixture.HomeScore;
+                    actualFixture.AwayScore = fixture.AwayScore;
+
+                    _context.Update(actualFixture);
+
+                    if (scoreHasChanged)
+                    {
+                        var predictions = _context.Predictions.Where(p => p.FixtureId == actualFixture.Id).ToList();
+
+                        //update predictions
+                        foreach (Prediction prediction in predictions)
+                        {
+                            // correct result
+
+                            prediction.Points = 0;
+
+                            if (prediction.HomeScore > prediction.AwayScore && fixture.HomeScore > fixture.AwayScore
+                                || prediction.HomeScore < prediction.AwayScore && fixture.HomeScore < fixture.AwayScore
+                                || prediction.HomeScore == prediction.AwayScore && fixture.HomeScore == fixture.AwayScore   // correct result: +1 pt
+                            )
+                            {
+                                prediction.Points += 1;
+                            }
+
+                            if (prediction.HomeScore == fixture.HomeScore && prediction.AwayScore == fixture.AwayScore)
+                            {
+                                prediction.Points += 2;
+                            }
+
+                            _context.SaveChanges();
+                        }
+                    }
                 }
+
+
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FixtureExists(fixture.Id))
+                    if (!FixtureExists(actualFixture.Id))
                     {
                         return NotFound();
                     }
@@ -115,7 +172,7 @@ namespace Predictr.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Fixtures");
             }
             return View(fixture);
         }

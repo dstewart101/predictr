@@ -1,4 +1,4 @@
-﻿@model Predictr.Models.Fixture
+﻿@model Predictr.ViewModels.VM_EditFixture
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,11 +12,16 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
                 <label asp-for="FixtureDateTime" class="control-label"></label>
                 <input asp-for="FixtureDateTime" class="form-control" />
                 <span asp-validation-for="FixtureDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group" class="control-label"></label>
+                <input asp-for="Group" class="form-control" />
+                <span asp-validation-for="Group" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Home" class="control-label"></label>
@@ -37,16 +42,6 @@
                 <label asp-for="AwayScore" class="control-label"></label>
                 <input asp-for="AwayScore" class="form-control" />
                 <span asp-validation-for="AwayScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Result" class="control-label"></label>
-                <input asp-for="Result" class="form-control" />
-                <span asp-validation-for="Result" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Group" class="control-label"></label>
-                <input asp-for="Group" class="form-control" />
-                <span asp-validation-for="Group" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
