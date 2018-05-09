@@ -1,4 +1,6 @@
-﻿using Predictr.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Predictr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,21 @@ namespace Predictr.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
+
+            
             //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
+            // create the two roles
+
+            var roleStore = new RoleStore<IdentityRole>(context);
+
+            if (!context.Roles.Any())
+            {
+                roleStore.CreateAsync(new IdentityRole("Admin"));
+                roleStore.CreateAsync(new IdentityRole("Player"));
+            }
+            
 
             // Look for any students.
             if (!context.Teams.Any())

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace Predictr.Controllers
         // GET: Fixtures
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fixtures.ToListAsync());
+            return View(await _context.Fixtures.OrderBy(f => f.FixtureDateTime).ToListAsync());
         }
 
         // GET: Fixtures/Details/5
@@ -43,6 +44,7 @@ namespace Predictr.Controllers
             return View(fixture);
         }
 
+        [Authorize(Roles="Admin")]
         // GET: Fixtures/Create
         public IActionResult Create()
         {
@@ -66,6 +68,7 @@ namespace Predictr.Controllers
         }
 
         // GET: Fixtures/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +89,7 @@ namespace Predictr.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FixtureDateTime,Home,HomeScore,Away,AwayTeamScore,Result,Group")] Fixture fixture)
         {
             if (id != fixture.Id)
@@ -117,6 +121,8 @@ namespace Predictr.Controllers
         }
 
         // GET: Fixtures/Delete/5
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +143,7 @@ namespace Predictr.Controllers
         // POST: Fixtures/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
