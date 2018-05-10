@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Predictr.ViewModels.VM_League>
+﻿@model Predictr.ViewModels.VM_League
 
 @{
     ViewData["Title"] = "Index";
@@ -22,13 +22,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.PlayerScores)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PlayerScores)
+                    @Html.DisplayFor(modelItem => item.Username)
                 </td>
-                
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPoints)
+                </td>
                 
             </tr>
         }
