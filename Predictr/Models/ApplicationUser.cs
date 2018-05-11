@@ -9,5 +9,7 @@ namespace Predictr.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public String FirstName { get; set; }
+        public String Surname { get; set; }
     }
 }
