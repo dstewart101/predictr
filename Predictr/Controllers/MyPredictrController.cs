@@ -29,7 +29,7 @@ namespace Predictr.Controllers
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
 
             VM_MyPredictr vm = new VM_MyPredictr();
-            vm.Predictions = _context.Predictions.Where(p => p.ApplicationUser == user.Value).ToList();
+            vm.Predictions = _context.Predictions.Where(p => p.ApplicationUser.Id == user.Value).ToList();
 
             var allFixtures = _context.Fixtures.ToList();
 

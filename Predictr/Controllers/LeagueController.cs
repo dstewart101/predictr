@@ -27,12 +27,12 @@ namespace Predictr.Controllers
         public IActionResult Index()
         {
 
-            var predictions = _context.Predictions.ToList();
+            var predictions = _context.Predictions.Include("ApplicationUser").ToList();
 
             VM_League vm = new VM_League();
 
             IEnumerable<PlayerScore> scores = from p in predictions
-                                    group p by p.ApplicationUser into g
+                                    group p by p.ApplicationUser.Email into g
                                     select new PlayerScore { Username = g.Key, TotalPoints = g.Sum(p => p.Points) };
 
             vm.PlayerScores = scores.ToList();
