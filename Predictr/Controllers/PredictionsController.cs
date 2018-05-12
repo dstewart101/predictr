@@ -48,21 +48,30 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Create
-        public IActionResult Create(int id)
+        public IActionResult Create(int? id)
         {
 
-            int _fixtureId = id;
-            VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
+            else {
+                var _fixtureId = id;
+                VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
 
-           
+                var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
 
+                if (fixture == null)
+                {
+                    return NotFound();
+                }
 
-            _thisPrediction.HomeTeam = fixture.Home;
-            _thisPrediction.AwayTeam = fixture.Away;
+                _thisPrediction.HomeTeam = fixture.Home;
+                _thisPrediction.AwayTeam = fixture.Away;
 
-            return View(_thisPrediction);
+                return View(_thisPrediction);
+            }
         }
 
         // POST: Predictions/Create
