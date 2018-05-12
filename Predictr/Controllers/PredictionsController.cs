@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
+    [Authorize]
     public class PredictionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -54,6 +56,9 @@ namespace Predictr.Controllers
 
             var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
 
+           
+
+
             _thisPrediction.HomeTeam = fixture.Home;
             _thisPrediction.AwayTeam = fixture.Away;
 
@@ -78,8 +83,7 @@ namespace Predictr.Controllers
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
 
-
-
+               
                 _context.Add(_fullPrediction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "MyPredictr");
