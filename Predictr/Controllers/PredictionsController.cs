@@ -95,12 +95,21 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var prediction = await _context.Predictions.SingleOrDefaultAsync(m => m.Id == id);
+            var prediction = await _context.Predictions.Include("Fixture").SingleOrDefaultAsync(m => m.Id == id);
+
             if (prediction == null)
             {
                 return NotFound();
             }
-            return View(prediction);
+
+            VM_EditPrediction vm = new VM_EditPrediction();
+
+            vm.HomeTeam = prediction.Fixture.Home;
+            vm.AwayTeam = prediction.Fixture.Away;
+            vm.HomeScore = prediction.HomeScore;
+            vm.HomeScore = prediction.AwayScore;
+
+            return View(vm);
         }
 
         // POST: Predictions/Edit/5
@@ -108,9 +117,12 @@ namespace Predictr.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FixtureId,ApplicationUser,HomeScore,AwayScore,ModifierId,Points")] Prediction prediction)
+        public async Task<IActionResult> Edit(int id, VM_EditPrediction prediction)
         {
-            if (id != prediction.Id)
+            var predictionToUpdate = await _context.Predictions
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (predictionToUpdate == null)
             {
                 return NotFound();
             }
@@ -119,12 +131,15 @@ namespace Predictr.Controllers
             {
                 try
                 {
-                    _context.Update(prediction);
+                    predictionToUpdate.HomeScore = prediction.HomeScore;
+                    predictionToUpdate.AwayScore = prediction.AwayScore;
+
+                    _context.Update(predictionToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PredictionExists(prediction.Id))
+                    if (!PredictionExists(id))
                     {
                         return NotFound();
                     }
@@ -133,7 +148,7 @@ namespace Predictr.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "MyPredictr");
             }
             return View(prediction);
         }

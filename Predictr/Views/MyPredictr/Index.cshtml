@@ -58,7 +58,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Points)
             </td>
-
+            <td>
+                <a asp-area="" asp-controller="Predictions" asp-action="Edit" asp-route-id="@item.Id">Change</a>
+            </td>
 
         </tr>
         }
@@ -102,36 +104,36 @@
     <tbody>
         @foreach (var item in Model.UnPredictedFixtures)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FixtureDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Home)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HomeScore)
-            </td>
-            <th>
-                vs
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwayScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Away)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Result)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FixtureDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Home)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeScore)
+                </td>
+                <th>
+                    vs
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AwayScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Away)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result)
+                </td>
 
-            <td>
-                <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
-            </td>
-        </tr>
+                <td>
+                    <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
