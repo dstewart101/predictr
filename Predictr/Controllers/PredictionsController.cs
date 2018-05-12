@@ -73,7 +73,7 @@ namespace Predictr.Controllers
 
                 Prediction _fullPrediction = new Prediction();
 
-                _fullPrediction.ApplicationUser.Id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                _fullPrediction.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 _fullPrediction.FixtureId = id;
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
