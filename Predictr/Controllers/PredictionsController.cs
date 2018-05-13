@@ -116,6 +116,11 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
+            if (prediction.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            {
+                return Unauthorized();
+            }
+
             VM_EditPrediction vm = new VM_EditPrediction();
 
             vm.HomeTeam = prediction.Fixture.Home;
@@ -139,6 +144,10 @@ namespace Predictr.Controllers
             if (predictionToUpdate == null)
             {
                 return NotFound();
+            }
+
+            if (predictionToUpdate.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value) {
+                return Unauthorized();
             }
 
             if (ModelState.IsValid)
