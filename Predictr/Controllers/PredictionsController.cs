@@ -126,7 +126,7 @@ namespace Predictr.Controllers
             vm.HomeTeam = prediction.Fixture.Home;
             vm.AwayTeam = prediction.Fixture.Away;
             vm.HomeScore = prediction.HomeScore;
-            vm.HomeScore = prediction.AwayScore;
+            vm.AwayScore = prediction.AwayScore;
 
             return View(vm);
         }
