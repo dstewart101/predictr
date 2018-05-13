@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Predictr.ViewModels
 {
@@ -9,7 +7,13 @@ namespace Predictr.ViewModels
     {
         public String HomeTeam { get; set; }
         public String AwayTeam { get; set; }
+
+        [Required]
+        [Range(0, 100)]
         public int HomeScore { get; set; }
+
+        [Required]
+        [Range(0, 100)]
         public int AwayScore { get; set; }
     }
 }
