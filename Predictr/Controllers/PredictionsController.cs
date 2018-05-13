@@ -168,7 +168,7 @@ namespace Predictr.Controllers
                 return Unauthorized();
             }
 
-            if (prediction.Fixture.FixtureDateTime < DateTime.Now)
+            if (predictionToUpdate.Fixture.FixtureDateTime < DateTime.Now)
             {
                 return RedirectToAction("Index", "MyPredictr");
             }
