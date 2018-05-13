@@ -6,9 +6,6 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -24,17 +21,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.HomeScore)
             </th>
-
+            <th>
+                vs
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.AwayScore)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Away)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Result)
-            </th>
-
             <th></th>
         </tr>
     </thead>
@@ -54,21 +49,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.HomeScore)
                 </td>
+                <td>
+                    vs
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.AwayScore)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Away)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Result)
-                </td>
-
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
