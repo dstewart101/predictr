@@ -37,7 +37,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var prediction = await _context.Predictions
+            var prediction = await _context.Predictions.Include("Fixture")
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (prediction == null)
             {
@@ -63,6 +63,11 @@ namespace Predictr.Controllers
 
                 var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
 
+                if (fixture.FixtureDateTime < DateTime.Now)
+                {
+                    return RedirectToAction("Index", "MyPredictr");
+                }
+
                 if (fixture == null)
                 {
                     return NotFound();
@@ -87,6 +92,14 @@ namespace Predictr.Controllers
                 VM_CreatePrediction _prediction = prediction;
 
                 Prediction _fullPrediction = new Prediction();
+
+                var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == id);
+
+                if (fixture.FixtureDateTime < DateTime.Now)
+                {
+                    return RedirectToAction("Index", "MyPredictr");
+                }
+
 
                 _fullPrediction.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 _fullPrediction.FixtureId = id;
@@ -116,6 +129,11 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
+            if (prediction.Fixture.FixtureDateTime < DateTime.Now)
+            {
+                return RedirectToAction("Index", "MyPredictr");
+            }
+
             if (prediction.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
             {
                 return Unauthorized();
@@ -138,7 +156,7 @@ namespace Predictr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, VM_EditPrediction prediction)
         {
-            var predictionToUpdate = await _context.Predictions
+            var predictionToUpdate = await _context.Predictions.Include("Fixture")
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (predictionToUpdate == null)
@@ -148,6 +166,11 @@ namespace Predictr.Controllers
 
             if (predictionToUpdate.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value) {
                 return Unauthorized();
+            }
+
+            if (prediction.Fixture.FixtureDateTime < DateTime.Now)
+            {
+                return RedirectToAction("Index", "MyPredictr");
             }
 
             if (ModelState.IsValid)

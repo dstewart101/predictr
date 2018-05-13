@@ -36,33 +36,41 @@
     <tbody>
         @foreach (var item in Model.Predictions)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fixture.Home)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HomeScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwayScore)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fixture.Away)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fixture.Result)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Points)
-            </td>
-            <td>
-                <a asp-area="" asp-controller="Predictions" asp-action="Edit" asp-route-id="@item.Id">Change</a>
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.Home)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AwayScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.Away)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.Result)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
+                <td>
+                    @if (item.Fixture.FixtureDateTime < DateTime.Now)
+                    {
 
-        </tr>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Predictions" asp-action="Edit" asp-route-id="@item.Id">Change</a>
+                    }
+
+                </td>
+
+            </tr>
         }
     </tbody>
 </table>
@@ -131,7 +139,10 @@
                 </td>
 
                 <td>
-                    <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
+                    @if (item.FixtureDateTime > DateTime.Now)
+                    {
+                        <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
+                    }
                 </td>
             </tr>
         }
