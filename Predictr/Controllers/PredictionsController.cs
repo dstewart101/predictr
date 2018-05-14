@@ -100,13 +100,13 @@ namespace Predictr.Controllers
                     return RedirectToAction("Index", "MyPredictr");
                 }
 
-
                 _fullPrediction.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 _fullPrediction.FixtureId = id;
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
+                _fullPrediction.Joker = prediction.Joker;
+                _fullPrediction.DoubleUp = prediction.DoubleUp;
 
-               
                 _context.Add(_fullPrediction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "MyPredictr");
@@ -179,6 +179,8 @@ namespace Predictr.Controllers
                 {
                     predictionToUpdate.HomeScore = prediction.HomeScore;
                     predictionToUpdate.AwayScore = prediction.AwayScore;
+                    predictionToUpdate.Joker = prediction.Joker;
+                    predictionToUpdate.DoubleUp = prediction.DoubleUp;
 
                     _context.Update(predictionToUpdate);
                     await _context.SaveChangesAsync();

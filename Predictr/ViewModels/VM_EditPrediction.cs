@@ -1,5 +1,4 @@
-﻿using Predictr.Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Predictr.ViewModels
@@ -16,5 +15,8 @@ namespace Predictr.ViewModels
         [Required(ErrorMessage = "Away Score Required")]
         [Range(0, 100, ErrorMessage = "Score should be in the range of 0 to 100")]
         public int AwayScore { get; set; }
+
+        public Boolean DoubleUp { get; set; }
+        public Boolean Joker { get; set; }
     }
 }
