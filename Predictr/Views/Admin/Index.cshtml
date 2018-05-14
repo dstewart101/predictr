@@ -1,0 +1,48 @@
+﻿
+@model Predictr.ViewModels.VM_Admin
+
+@{
+    ViewData["Title"] = "Admin Index - Predictr";
+}
+
+<h2>Admin</h2>
+
+<h4>
+    Fixtures
+</h4>
+
+<table class="table col-md-6">
+    <tbody>
+        @foreach (var item in Model.Fixtures)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FixtureDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Home)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomeScore)
+            </td>
+            <td>
+                vs
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwayScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Away)
+            </td>
+            <td>
+                <a asp-area="" asp-controller="Fixtures" asp-action="Details" asp-route-id="@item.Id">View</a>
+                <a asp-area="" asp-controller="Fixtures" asp-action="Edit" asp-route-id="@item.Id">Update</a>
+                <a asp-area="" asp-controller="Fixtures" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
