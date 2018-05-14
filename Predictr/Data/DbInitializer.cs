@@ -86,13 +86,13 @@ namespace Predictr.Data
                     new Fixture { Group="B", Home="Portugal", Away="Spain", FixtureDateTime = Convert.ToDateTime("2018-06-15 19:00:00")},
 
                     new Fixture { Group="C", Home="France", Away="Australia", FixtureDateTime = Convert.ToDateTime("2018-06-16 11:00:00")},
-                    new Fixture { Group="C", Home="Argentina", Away="Iceland", FixtureDateTime = Convert.ToDateTime("2018-06-16 14:00:00")},
-                    new Fixture { Group="D", Home="Peru", Away="Denmark", FixtureDateTime = Convert.ToDateTime("2018-06-16 17:00:00")},
+                    new Fixture { Group="D", Home="Argentina", Away="Iceland", FixtureDateTime = Convert.ToDateTime("2018-06-16 14:00:00")},
+                    new Fixture { Group="C", Home="Peru", Away="Denmark", FixtureDateTime = Convert.ToDateTime("2018-06-16 17:00:00")},
                     new Fixture { Group="D", Home="Croatia", Away="Nigeria", FixtureDateTime = Convert.ToDateTime("2018-06-16 20:00:00")},
 
                     new Fixture { Group="E", Home="Costa Rica", Away="Serbia", FixtureDateTime = Convert.ToDateTime("2018-06-17 13:00:00")},
-                    new Fixture { Group="E", Home="Germany", Away="Mexico", FixtureDateTime = Convert.ToDateTime("2018-06-17 16:00:00")},
-                    new Fixture { Group="F", Home="Brazil", Away="Switzerland", FixtureDateTime = Convert.ToDateTime("2018-06-17 19:00:00")},
+                    new Fixture { Group="F", Home="Germany", Away="Mexico", FixtureDateTime = Convert.ToDateTime("2018-06-17 16:00:00")},
+                    new Fixture { Group="E", Home="Brazil", Away="Switzerland", FixtureDateTime = Convert.ToDateTime("2018-06-17 19:00:00")},
 
                     new Fixture { Group="F", Home="Sweden", Away="South Korea", FixtureDateTime = Convert.ToDateTime("2018-06-18 13:00:00")},
                     new Fixture { Group="G", Home="Belgium", Away="Panama", FixtureDateTime = Convert.ToDateTime("2018-06-18 16:00:00")},
@@ -106,9 +106,47 @@ namespace Predictr.Data
                     new Fixture { Group="B", Home="Uruguay", Away="Saudi Arabia", FixtureDateTime = Convert.ToDateTime("2018-06-20 16:00:00")},
                     new Fixture { Group="B", Home="Iran", Away="Spain", FixtureDateTime = Convert.ToDateTime("2018-06-20 19:00:00")},
 
-                    new Fixture { Group="D", Home="Denmark", Away="Australia", FixtureDateTime = Convert.ToDateTime("2018-06-21 13:00:00")},
+                    new Fixture { Group="C", Home="Denmark", Away="Australia", FixtureDateTime = Convert.ToDateTime("2018-06-21 13:00:00")},
                     new Fixture { Group="C", Home="France", Away="Peru", FixtureDateTime = Convert.ToDateTime("2018-06-21 16:00:00")},
-                    new Fixture { Group="C", Home="Argentina", Away="Croatia", FixtureDateTime = Convert.ToDateTime("2018-06-21 19:00:00")}
+                    new Fixture { Group="D", Home="Argentina", Away="Croatia", FixtureDateTime = Convert.ToDateTime("2018-06-21 19:00:00")},
+
+                    new Fixture { Group="E", Home="Brazil", Away="Costa Rica", FixtureDateTime = Convert.ToDateTime("2018-06-22 13:00:00")},
+                    new Fixture { Group="D", Home="Nigeria", Away="Iceland", FixtureDateTime = Convert.ToDateTime("2018-06-22 16:00:00")},
+                    new Fixture { Group="E", Home="Argentina", Away="Croatia", FixtureDateTime = Convert.ToDateTime("2018-06-22 19:00:00")},
+
+                    new Fixture { Group="G", Home="Belgium", Away="Tunisia", FixtureDateTime = Convert.ToDateTime("2018-06-23 13:00:00")},
+                    new Fixture { Group="F", Home="South Korea", Away="Mexico", FixtureDateTime = Convert.ToDateTime("2018-06-23 16:00:00")},
+                    new Fixture { Group="F", Home="Germany", Away="Sweden", FixtureDateTime = Convert.ToDateTime("2018-06-23 19:00:00")},
+
+                    new Fixture { Group="G", Home="England", Away="Panama", FixtureDateTime = Convert.ToDateTime("2018-06-24 13:00:00")},
+                    new Fixture { Group="H", Home="Japan", Away="Senegal", FixtureDateTime = Convert.ToDateTime("2018-06-24 16:00:00")},
+                    new Fixture { Group="H", Home="Poland", Away="Columbia", FixtureDateTime = Convert.ToDateTime("2018-06-24 19:00:00")},
+
+                    // match day 3:
+
+                    new Fixture { Group="A", Home="Saudi Arabia", Away="Egypt", FixtureDateTime = Convert.ToDateTime("2018-06-25 15:00:00")},
+                    new Fixture { Group="A", Home="Uruguay", Away="Russia", FixtureDateTime = Convert.ToDateTime("2018-06-25 15:00:00")},
+
+                    new Fixture { Group="B", Home="Iran", Away="Portugal", FixtureDateTime = Convert.ToDateTime("2018-06-25 19:00:00")},
+                    new Fixture { Group="B", Home="Spain", Away="Morocco", FixtureDateTime = Convert.ToDateTime("2018-06-25 19:00:00")},
+
+                    new Fixture { Group="C", Home="Australia", Away="Peru", FixtureDateTime = Convert.ToDateTime("2018-06-26 15:00:00")},
+                    new Fixture { Group="C", Home="Denmark", Away="France", FixtureDateTime = Convert.ToDateTime("2018-06-26 15:00:00")},
+
+                    new Fixture { Group="D", Home="Nigeria", Away="Argentina", FixtureDateTime = Convert.ToDateTime("2018-06-26 19:00:00")},
+                    new Fixture { Group="D", Home="Iceland", Away="Croatia", FixtureDateTime = Convert.ToDateTime("2018-06-26 19:00:00")},
+
+                    new Fixture { Group="E", Home="South Korea", Away="Germany", FixtureDateTime = Convert.ToDateTime("2018-06-27 15:00:00")},
+                    new Fixture { Group="E", Home="Mexico", Away="Sweden", FixtureDateTime = Convert.ToDateTime("2018-06-27 15:00:00")},
+
+                    new Fixture { Group="F", Home="Switzerland", Away="Costa Rica", FixtureDateTime = Convert.ToDateTime("2018-06-27 19:00:00")},
+                    new Fixture { Group="F", Home="Serbia", Away="Brazil", FixtureDateTime = Convert.ToDateTime("2018-06-26 19:00:00")},
+
+                    new Fixture { Group="G", Home="Senegal", Away="Columbia", FixtureDateTime = Convert.ToDateTime("2018-06-28 15:00:00")},
+                    new Fixture { Group="G", Home="Japan", Away="Poland", FixtureDateTime = Convert.ToDateTime("2018-06-28 15:00:00")},
+
+                    new Fixture { Group="H", Home="England", Away="Belgium", FixtureDateTime = Convert.ToDateTime("2018-06-28 19:00:00")},
+                    new Fixture { Group="H", Home="Panama", Away="Tunisia", FixtureDateTime = Convert.ToDateTime("2018-06-28 19:00:00")},
 
                 };
 

@@ -67,7 +67,7 @@ namespace Predictr.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(fixture);
+            return RedirectToAction("Index", "Admin");
         }
 
         // GET: Fixtures/Edit/5
@@ -106,8 +106,6 @@ namespace Predictr.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id, HomeScore, AwayScore")] VM_EditFixture fixture)
         {
-
-            
             Boolean scoreHasChanged = false;
 
             var actualFixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
@@ -121,7 +119,6 @@ namespace Predictr.Controllers
             {
                 try
                 {
-
                     if ((fixture.HomeScore != actualFixture.HomeScore) || fixture.AwayScore != actualFixture.AwayScore)
                     {
                         scoreHasChanged = true;
@@ -129,6 +126,7 @@ namespace Predictr.Controllers
 
                     actualFixture.HomeScore = fixture.HomeScore;
                     actualFixture.AwayScore = fixture.AwayScore;
+                    actualFixture.Result = fixture.HomeScore + " - " + fixture.AwayScore;
 
                     _context.Update(actualFixture);
 
@@ -155,10 +153,9 @@ namespace Predictr.Controllers
                             {
                                 prediction.Points += 2;
                             }
-
-                            _context.SaveChanges();
                         }
                     }
+                    _context.SaveChanges();
                 }
 
 
@@ -173,7 +170,7 @@ namespace Predictr.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "Fixtures");
+                return RedirectToAction("Index", "Admin");
             }
             return View(fixture);
         }
@@ -207,7 +204,7 @@ namespace Predictr.Controllers
             var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
             _context.Fixtures.Remove(fixture);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Admin");
         }
 
         private bool FixtureExists(int id)

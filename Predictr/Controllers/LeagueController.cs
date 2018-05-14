@@ -32,8 +32,13 @@ namespace Predictr.Controllers
             VM_League vm = new VM_League();
 
             IEnumerable<PlayerScore> scores = from p in predictions
-                                    group p by p.ApplicationUser.Email into g
-                                    select new PlayerScore { Username = g.Key, TotalPoints = g.Sum(p => p.Points) };
+                                    group p by p.ApplicationUser.UserName into g
+                                    select new PlayerScore {
+                                        Username = g.Key,
+                                        TotalPoints = g.Sum(p => p.Points),
+                                        FirstName = g.Select(f => f.ApplicationUser.FirstName).FirstOrDefault(),
+                                        Surname = g.Select(f => f.ApplicationUser.Surname).FirstOrDefault()
+                                    };
 
             vm.PlayerScores = scores.ToList();
 
