@@ -4,11 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Predictr League Table</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -16,7 +14,7 @@
                 Username
             </th>
             <th>
-                Scores
+                Points
             </th>
             
         </tr>
@@ -26,7 +24,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Username)
+                    @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.Surname)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalPoints)
