@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
 using Predictr.Models;
+using Predictr.Services;
 using Predictr.ViewModels;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Predictr.Controllers
 {
@@ -67,15 +66,10 @@ namespace Predictr.Controllers
 
                 var currentPredictions = _context.Predictions.ToList();
 
-                int doublesUsed = currentPredictions
-                                    .Where(p => p.ApplicationUserId == currentUserId)
-                                    .Where(p => p.DoubleUp == true)
-                                    .Count();
+                PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                int jokersUsed = currentPredictions
-                                    .Where(p => p.ApplicationUserId == currentUserId)
-                                    .Where(p => p.Joker == true)
-                                    .Count();
+                int doublesUsed = ph.CountDoublesPlayed();
+                int jokersUsed = ph.CountJokersPlayed();
 
 
 
@@ -128,17 +122,14 @@ namespace Predictr.Controllers
 
                 String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+                
+
                 var currentPredictions = _context.Predictions.ToList();
 
-                int doublesUsed = currentPredictions
-                                    .Where(p => p.ApplicationUserId == currentUserId)
-                                    .Where(p => p.DoubleUp == true)
-                                    .Count();
+                PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                int jokersUsed = currentPredictions
-                                    .Where(p => p.ApplicationUserId == currentUserId)
-                                    .Where(p => p.Joker == true)
-                                    .Count();
+                int doublesUsed = ph.CountDoublesPlayed();
+                int jokersUsed = ph.CountJokersPlayed();
 
                 var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == id);
 
@@ -152,28 +143,26 @@ namespace Predictr.Controllers
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
 
-                if (jokersUsed < 3)
+                if (jokersUsed < 3 || prediction.Joker == false)
                 {
                     _fullPrediction.Joker = prediction.Joker;
                 }
-                else
+                else if (jokersUsed == 3 && _prediction.Joker == true)
                 {
                     // back to the offending prediction
                     return RedirectToAction("Create", "Predictions", new { id }); // redirect to create prediction 
                 }
 
-                if (doublesUsed < 3)
+                if (doublesUsed < 3 || prediction.DoubleUp == false)
                 {
                     _fullPrediction.DoubleUp = prediction.DoubleUp;
                 }
-                else
+
+                else if (doublesUsed == 3 && _prediction.DoubleUp == true)
                 {
                     // back to the offending prediction
                     return RedirectToAction("Create", "Predictions", new { id });
                 }
-
-                _fullPrediction.Joker = prediction.Joker;
-                _fullPrediction.DoubleUp = prediction.DoubleUp;
 
                 _context.Add(_fullPrediction);
                 await _context.SaveChangesAsync();
@@ -207,21 +196,17 @@ namespace Predictr.Controllers
                 return Unauthorized();
             }
 
+            
             VM_EditPrediction vm = new VM_EditPrediction();
 
             String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var currentPredictions = _context.Predictions.ToList();
+            PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            int doublesUsed = currentPredictions
-                                .Where(p => p.ApplicationUserId == currentUserId)
-                                .Where(p => p.DoubleUp == true)
-                                .Count();
 
-            int jokersUsed = currentPredictions
-                                .Where(p => p.ApplicationUserId == currentUserId)
-                                .Where(p => p.Joker == true)
-                                .Count();
+            int doublesUsed = ph.CountDoublesPlayed();
+            int jokersUsed = ph.CountJokersPlayed();
 
             vm.HomeTeam = prediction.Fixture.Home;
             vm.AwayTeam = prediction.Fixture.Away;
@@ -296,29 +281,26 @@ namespace Predictr.Controllers
                 try
                 {
 
+
+
                     var currentPredictions = _context.Predictions.ToList();
 
-                    int doublesUsed = currentPredictions
-                                .Where(p => p.ApplicationUserId == currentUserId)
-                                .Where(p => p.DoubleUp == true)
-                                .Count();
+                    PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                    int jokersUsed = currentPredictions
-                                        .Where(p => p.ApplicationUserId == currentUserId)
-                                        .Where(p => p.Joker == true)
-                                        .Count();
+                    int doublesUsed = ph.CountDoublesPlayed();
+                    int jokersUsed = ph.CountJokersPlayed();
 
                     predictionToUpdate.HomeScore = prediction.HomeScore;
                     predictionToUpdate.AwayScore = prediction.AwayScore;
 
 
-                    if (jokersUsed < 3)
+                    if (jokersUsed < 3 || prediction.Joker == false)
                     {
                         predictionToUpdate.Joker = prediction.Joker;
                     }
                     else
                     {
-                        if (prediction.Joker == true)
+                        if (predictionToUpdate.Joker == true)
                         {
                             predictionToUpdate.Joker = prediction.Joker;
                         }
@@ -328,13 +310,13 @@ namespace Predictr.Controllers
                         }
                     }
 
-                    if (doublesUsed < 3)
+                    if (doublesUsed < 3 || prediction.DoubleUp == false)
                     {
                         predictionToUpdate.DoubleUp = prediction.DoubleUp;
                     }
                     else
                     {
-                        if (prediction.DoubleUp == true)
+                        if (predictionToUpdate.DoubleUp == true)
                         {
                             predictionToUpdate.DoubleUp = prediction.DoubleUp;
                         }

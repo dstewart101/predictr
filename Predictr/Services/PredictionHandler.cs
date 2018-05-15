@@ -10,7 +10,8 @@ namespace Predictr.Services
     {
 
         private List<Prediction> _predictions;
-        private Fixture _fixture; 
+        private Fixture _fixture;
+        private String _user;
 
         public PredictionHandler(List<Prediction> predictions, Fixture fixture) {
 
@@ -18,6 +19,13 @@ namespace Predictr.Services
             _fixture = fixture;
 
         }
+
+        public PredictionHandler(List<Prediction> predictions, String user) {
+            _predictions = predictions;
+            _user = user;
+        }
+
+
 
         public Boolean CorrectResult(Prediction _prediction, Fixture _fixture) {
             if (_prediction.HomeScore > _prediction.AwayScore && this._fixture.HomeScore > this._fixture.AwayScore
@@ -101,6 +109,21 @@ namespace Predictr.Services
             {
                 return false;
             }
+        }
+
+        public int CountDoublesPlayed() {
+            return _predictions
+                        .Where(p => p.ApplicationUserId == _user)
+                        .Where(p => p.DoubleUp == true)
+                        .Count();
+        }
+
+        public int CountJokersPlayed()
+        {
+            return _predictions
+                        .Where(p => p.ApplicationUserId == _user)
+                        .Where(p => p.Joker == true)
+                        .Count();
         }
     }
 }
