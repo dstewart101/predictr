@@ -238,7 +238,7 @@ namespace Predictr.Controllers
             {
                 if (prediction.DoubleUp == true)
                 {
-                    vm.JokerDisabled = false;
+                    vm.DoubleUpDisabled = false;
                 }
                 else
                 {
