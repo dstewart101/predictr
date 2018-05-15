@@ -25,7 +25,8 @@ namespace Predictr.Controllers
             var allFixtures = _context.Fixtures.ToList();
             vm.Fixtures = allFixtures.OrderBy(p => p.FixtureDateTime).ToList();
 
-
+            var allUsers = _context.Users.ToList();
+            vm.Users = allUsers.OrderBy(p => p.Surname).ToList();
 
             return View("Index", vm);
         }

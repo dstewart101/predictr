@@ -6,12 +6,13 @@
 
 <h2>My Predictions</h2>
 
-<table class="table">
+<table class="table table-condensed table-striped">
     <thead>
         <tr>
             <th>
                 Date/Time
             </th>
+            <th></th>
             <th>
                 Home
             </th>
@@ -39,6 +40,16 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime)
+                </td>
+                <td>
+                    @if (item.DoubleUp == true)
+                    {
+                        @:2x
+                    }
+                    @if (item.Joker == true)
+                    {
+                        @:J
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fixture.Home)
@@ -78,7 +89,7 @@
 
 <h2>Un-Predicted Games</h2>
 
-<table class="table">
+<table class="table table-condensed table-striped">
     <thead>
         <tr>
             <th>
