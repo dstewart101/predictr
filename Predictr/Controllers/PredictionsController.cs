@@ -209,12 +209,57 @@ namespace Predictr.Controllers
 
             VM_EditPrediction vm = new VM_EditPrediction();
 
+            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var currentPredictions = _context.Predictions.ToList();
+
+            int doublesUsed = currentPredictions
+                                .Where(p => p.ApplicationUserId == currentUserId)
+                                .Where(p => p.DoubleUp == true)
+                                .Count();
+
+            int jokersUsed = currentPredictions
+                                .Where(p => p.ApplicationUserId == currentUserId)
+                                .Where(p => p.Joker == true)
+                                .Count();
+
             vm.HomeTeam = prediction.Fixture.Home;
             vm.AwayTeam = prediction.Fixture.Away;
             vm.HomeScore = prediction.HomeScore;
             vm.AwayScore = prediction.AwayScore;
             vm.Joker = prediction.Joker;
             vm.DoubleUp = prediction.DoubleUp;
+
+            if (jokersUsed < 3)
+            {
+                vm.JokerDisabled = false;
+            }
+            else
+            {
+                if (prediction.Joker == true)
+                {
+                    vm.JokerDisabled = false;
+                }
+                else {
+                    vm.JokerDisabled = true;
+                }
+            }
+
+            if (doublesUsed < 3)
+            {
+                vm.DoubleUpDisabled = false;
+            }
+            else
+            {
+                if (prediction.DoubleUp == true)
+                {
+                    vm.JokerDisabled = false;
+                }
+                else
+                {
+                    vm.DoubleUpDisabled = true;
+                }
+            }
 
             return View(vm);
         }
@@ -226,6 +271,9 @@ namespace Predictr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, VM_EditPrediction prediction)
         {
+
+            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var predictionToUpdate = await _context.Predictions.Include("Fixture")
                 .SingleOrDefaultAsync(m => m.Id == id);
 
@@ -234,7 +282,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            if (predictionToUpdate.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value) {
+            if (predictionToUpdate.ApplicationUserId != currentUserId) {
                 return Unauthorized();
             }
 
@@ -247,8 +295,56 @@ namespace Predictr.Controllers
             {
                 try
                 {
+
+                    var currentPredictions = _context.Predictions.ToList();
+
+                    int doublesUsed = currentPredictions
+                                .Where(p => p.ApplicationUserId == currentUserId)
+                                .Where(p => p.DoubleUp == true)
+                                .Count();
+
+                    int jokersUsed = currentPredictions
+                                        .Where(p => p.ApplicationUserId == currentUserId)
+                                        .Where(p => p.Joker == true)
+                                        .Count();
+
                     predictionToUpdate.HomeScore = prediction.HomeScore;
                     predictionToUpdate.AwayScore = prediction.AwayScore;
+
+
+                    if (jokersUsed < 3)
+                    {
+                        predictionToUpdate.Joker = prediction.Joker;
+                    }
+                    else
+                    {
+                        if (prediction.Joker == true)
+                        {
+                            predictionToUpdate.Joker = prediction.Joker;
+                        }
+                        else {
+                            // back to the offending prediction
+                            return RedirectToAction("Edit", "Predictions", new { id }); // redirect to create prediction
+                        }
+                    }
+
+                    if (doublesUsed < 3)
+                    {
+                        predictionToUpdate.DoubleUp = prediction.DoubleUp;
+                    }
+                    else
+                    {
+                        if (prediction.DoubleUp == true)
+                        {
+                            predictionToUpdate.DoubleUp = prediction.DoubleUp;
+                        }
+                        else
+                        {
+                            // back to the offending prediction
+                            return RedirectToAction("Edit", "Predictions", new { id }); // redirect to create prediction
+                        }
+                    }
+
                     predictionToUpdate.Joker = prediction.Joker;
                     predictionToUpdate.DoubleUp = prediction.DoubleUp;
 

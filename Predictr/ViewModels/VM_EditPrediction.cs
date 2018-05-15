@@ -18,5 +18,8 @@ namespace Predictr.ViewModels
 
         public Boolean DoubleUp { get; set; }
         public Boolean Joker { get; set; }
+
+        public Boolean DoubleUpDisabled { get; set; }
+        public Boolean JokerDisabled { get; set; }
     }
 }
