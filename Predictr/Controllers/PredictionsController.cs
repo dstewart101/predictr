@@ -63,6 +63,22 @@ namespace Predictr.Controllers
 
                 var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
 
+                String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                var currentPredictions = _context.Predictions.ToList();
+
+                int doublesUsed = currentPredictions
+                                    .Where(p => p.ApplicationUserId == currentUserId)
+                                    .Where(p => p.DoubleUp == true)
+                                    .Count();
+
+                int jokersUsed = currentPredictions
+                                    .Where(p => p.ApplicationUserId == currentUserId)
+                                    .Where(p => p.Joker == true)
+                                    .Count();
+
+
+
                 if (fixture.FixtureDateTime < DateTime.Now)
                 {
                     return RedirectToAction("Index", "MyPredictr");
@@ -76,6 +92,23 @@ namespace Predictr.Controllers
                 _thisPrediction.HomeTeam = fixture.Home;
                 _thisPrediction.AwayTeam = fixture.Away;
 
+                if (jokersUsed < 3)
+                {
+                    _thisPrediction.JokerDisabled = false;
+                }
+                else {
+                    _thisPrediction.JokerDisabled = true;
+                }
+
+                if (doublesUsed < 3)
+                {
+                    _thisPrediction.DoubleUpDisabled = false;
+                }
+                else
+                {
+                    _thisPrediction.DoubleUpDisabled = true;
+                }
+                
                 return View(_thisPrediction);
             }
         }
@@ -93,6 +126,20 @@ namespace Predictr.Controllers
 
                 Prediction _fullPrediction = new Prediction();
 
+                String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                var currentPredictions = _context.Predictions.ToList();
+
+                int doublesUsed = currentPredictions
+                                    .Where(p => p.ApplicationUserId == currentUserId)
+                                    .Where(p => p.DoubleUp == true)
+                                    .Count();
+
+                int jokersUsed = currentPredictions
+                                    .Where(p => p.ApplicationUserId == currentUserId)
+                                    .Where(p => p.Joker == true)
+                                    .Count();
+
                 var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == id);
 
                 if (fixture.FixtureDateTime < DateTime.Now)
@@ -100,10 +147,31 @@ namespace Predictr.Controllers
                     return RedirectToAction("Index", "MyPredictr");
                 }
 
-                _fullPrediction.ApplicationUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                _fullPrediction.ApplicationUserId = currentUserId;
                 _fullPrediction.FixtureId = id;
                 _fullPrediction.HomeScore = prediction.HomeScore;
                 _fullPrediction.AwayScore = prediction.AwayScore;
+
+                if (jokersUsed < 3)
+                {
+                    _fullPrediction.Joker = prediction.Joker;
+                }
+                else
+                {
+                    // back to the offending prediction
+                    return RedirectToAction("Create", "Predictions", new { id }); // redirect to create prediction 
+                }
+
+                if (doublesUsed < 3)
+                {
+                    _fullPrediction.DoubleUp = prediction.DoubleUp;
+                }
+                else
+                {
+                    // back to the offending prediction
+                    return RedirectToAction("Create", "Predictions", new { id });
+                }
+
                 _fullPrediction.Joker = prediction.Joker;
                 _fullPrediction.DoubleUp = prediction.DoubleUp;
 
@@ -145,6 +213,8 @@ namespace Predictr.Controllers
             vm.AwayTeam = prediction.Fixture.Away;
             vm.HomeScore = prediction.HomeScore;
             vm.AwayScore = prediction.AwayScore;
+            vm.Joker = prediction.Joker;
+            vm.DoubleUp = prediction.DoubleUp;
 
             return View(vm);
         }
