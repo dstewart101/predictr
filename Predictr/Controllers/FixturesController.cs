@@ -108,6 +108,7 @@ namespace Predictr.Controllers
         {
             Boolean scoreHasChanged = false;
 
+
             var actualFixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
 
             if (id != actualFixture.Id)
@@ -133,27 +134,8 @@ namespace Predictr.Controllers
                     if (scoreHasChanged)
                     {
                         var predictions = _context.Predictions.Where(p => p.FixtureId == actualFixture.Id).ToList();
-
-                        //update predictions
-                        foreach (Prediction prediction in predictions)
-                        {
-                            // correct result
-
-                            prediction.Points = 0;
-
-                            if (prediction.HomeScore > prediction.AwayScore && fixture.HomeScore > fixture.AwayScore
-                                || prediction.HomeScore < prediction.AwayScore && fixture.HomeScore < fixture.AwayScore
-                                || prediction.HomeScore == prediction.AwayScore && fixture.HomeScore == fixture.AwayScore   // correct result: +1 pt
-                            )
-                            {
-                                prediction.Points += 1;
-                            }
-
-                            if (prediction.HomeScore == fixture.HomeScore && prediction.AwayScore == fixture.AwayScore)
-                            {
-                                prediction.Points += 2;
-                            }
-                        }
+                        PredictionHandler pp = new PredictionHandler(predictions, actualFixture);
+                        predictions = pp.updatePredictions();
                     }
                     _context.SaveChanges();
                 }
