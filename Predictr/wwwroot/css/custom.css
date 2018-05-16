@@ -1,0 +1,22 @@
+﻿
+body {
+    font-family: Lato, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #999;
+}
+
+.x2 {
+    background-color: #00F;
+    color: white;
+    border: 1px solid #003;
+    padding: 3px;
+}
+
+
+.joker {
+    background-color: orange;
+    color: white;
+    border: 1px solid orangered;
+    padding: 3px;
+}

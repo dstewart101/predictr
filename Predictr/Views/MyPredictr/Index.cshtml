@@ -42,13 +42,13 @@
                     @Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime)
                 </td>
                 <td>
-                    @if (item.DoubleUp == true)
-                    {
-                        @:2x
-                    }
                     @if (item.Joker == true)
                     {
-                        @:J
+                        @:<span class="joker">J</span>
+                    }
+                    @if (item.DoubleUp == true)
+                    {
+                        @:<span class="x2">2x</span>
                     }
                 </td>
                 <td>
