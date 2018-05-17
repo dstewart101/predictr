@@ -1,0 +1,59 @@
+﻿@model Predictr.ViewModels.VM_User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h2>@Model.FirstName @Model.Surname</h2>
+    <h4>League Points: </h4>
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                   Fixture
+                </th>
+                <th>
+                   Prediction
+                </th>
+                <th>
+                   Actual
+                </th>
+                
+                <th>
+                   
+                </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Predictions)
+            {
+                <tr>
+                    
+                    <td>@Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomeScore) - 
+                        @Html.DisplayFor(modelItem => item.AwayScore)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
+                        @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
+                    </td>>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Points)
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

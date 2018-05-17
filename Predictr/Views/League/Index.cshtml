@@ -24,7 +24,9 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.Surname)
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.Guid">
+                        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.Surname)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalPoints)

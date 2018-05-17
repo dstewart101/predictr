@@ -37,7 +37,8 @@ namespace Predictr.Controllers
                                         Username = g.Key,
                                         TotalPoints = g.Sum(p => p.Points),
                                         FirstName = g.Select(f => f.ApplicationUser.FirstName).FirstOrDefault(),
-                                        Surname = g.Select(f => f.ApplicationUser.Surname).FirstOrDefault()
+                                        Surname = g.Select(f => f.ApplicationUser.Surname).FirstOrDefault(),
+                                        Guid = g.Select(f => f.ApplicationUser.Id).FirstOrDefault()
                                     };
 
             vm.PlayerScores = scores.ToList();

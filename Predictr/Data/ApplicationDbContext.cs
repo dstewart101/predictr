@@ -28,5 +28,7 @@ namespace Predictr.Data
         public DbSet<Predictr.Models.Fixture> Fixtures { get; set; }
 
         public DbSet<Predictr.Models.Prediction> Predictions { get; set; }
+
+        public DbSet<Predictr.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
