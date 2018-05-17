@@ -13,40 +13,51 @@
         <thead>
             <tr>
                 <th>
-                   Fixture
+                    Fixture
                 </th>
                 <th>
-                   Prediction
+                    Prediction
                 </th>
                 <th>
-                   Actual
+
                 </th>
-                
                 <th>
-                   
+                    Actual
                 </th>
-                
+
+                <th>
+
+                </th>
+
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Predictions)
             {
-                <tr>
-                    
-                    <td>@Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HomeScore) - 
-                        @Html.DisplayFor(modelItem => item.AwayScore)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
-                        @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
-                    </td>>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Points)
-                    </td>
-                    
-                </tr>
+            <tr>
+
+                <td>@Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeScore) -
+                    @Html.DisplayFor(modelItem => item.AwayScore)
+                </td>
+                <td>
+                    @if (item.Joker == true) {
+                        @: <span class="joker">J</span>
+                    } 
+                     @if (item.DoubleUp == true) {
+                        @: <span class="x2">x2</span>
+                    } 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
+                    @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
+                </td>>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
+
+            </tr>
             }
         </tbody>
     </table>

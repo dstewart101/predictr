@@ -17,13 +17,13 @@ body {
 
 
 .navbar-inverse {
-    background-color: #bbb;
-    border-color: #999;
-    color: #333;
+    background-color: #092C52;
+    border-color: #B7C7D6;
+    color: #fff;
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: orangered;
+    color: #DA871F;
 }
 
 
