@@ -13,7 +13,7 @@ using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
-    [Authorize]
+    
     public class LeagueController : Controller
     {
         private readonly ApplicationDbContext _context;
