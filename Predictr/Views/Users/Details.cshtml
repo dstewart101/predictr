@@ -6,7 +6,7 @@
 
 <div>
     <h2>@Model.FirstName @Model.Surname</h2>
-    <h4>League Points: </h4>
+    <h4>League Points: @Model.Points</h4>
     <hr />
 
     <table class="table">
@@ -26,17 +26,15 @@
                 </th>
 
                 <th>
-
+                    Points
                 </th>
-
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Predictions)
             {
             <tr>
-
-                <td>@Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
+                <td>@Html.DisplayFor(ModelItem => item.Fixture.FixtureDateTime) / @Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
                 <td>
                     @Html.DisplayFor(modelItem => item.HomeScore) -
                     @Html.DisplayFor(modelItem => item.AwayScore)
@@ -52,7 +50,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
                     @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
-                </td>>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Points)
                 </td>
@@ -61,10 +59,4 @@
             }
         </tbody>
     </table>
-
-
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
