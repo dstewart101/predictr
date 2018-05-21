@@ -1,10 +1,7 @@
-﻿@model Predictr.ViewModels.VM_MyPredictr
+@using Predictr.ViewModels
 
-@{
-    ViewData["Title"] = "Index";
-}
+@inject Predictr.ViewModels.VM_User Model
 
-<h2>My Predictions</h2>
 
 <table class="table">
     <thead>
@@ -53,46 +50,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Points)
                 </td>
-                <td>
-                    @if (item.Fixture.FixtureDateTime < DateTime.Now)
-                    {
 
-                    }
-                    else
-                    {
-                        <a asp-area="" asp-controller="Predictions" asp-action="Edit" asp-route-id="@item.Id">Change</a>
-                    }
-
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-<h2>Un-Predicted Games</h2>
-
-<table class="table table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>
-                Fixture
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.UnPredictedFixtures)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(ModelItem => item.FixtureDateTime) /
-                    @Html.DisplayFor(modelItem => item.Home) vs @Html.DisplayFor(modelItem => item.Away) /
-                    @if (item.FixtureDateTime > DateTime.Now)
-                    {
-                        <a asp-area="" asp-controller="Predictions" asp-action="Create" asp-route-id="@item.Id">Make Prediction</a>
-                    }
-                </td>
             </tr>
         }
     </tbody>

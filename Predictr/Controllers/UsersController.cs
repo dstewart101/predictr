@@ -36,7 +36,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            var predictions = _context.Predictions.Include("Fixture").Where(p => p.ApplicationUserId == id).ToList();
+            var predictions = _context.Predictions.Include("Fixture").Where(p => p.ApplicationUserId == id).Where(p => p.Fixture.FixtureDateTime <= DateTime.Now).ToList();
 
             var applicationUser = await _context.ApplicationUser
                 .SingleOrDefaultAsync(m => m.Id == id);
@@ -50,6 +50,7 @@ namespace Predictr.Controllers
             vm.FirstName = applicationUser.FirstName;
             vm.Surname = applicationUser.Surname;
             vm.Predictions = predictions;
+            vm.Points = predictions.Sum(p => p.Points);
 
             return View(vm);
         }

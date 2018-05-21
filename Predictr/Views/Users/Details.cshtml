@@ -6,10 +6,10 @@
 
 <div>
     <h2>@Model.FirstName @Model.Surname</h2>
-    <h4>League Points: </h4>
+    <h4>League Points: @Model.Points</h4>
     <hr />
 
-    <table class="table table-striped">
+    <table class="table">
         <thead>
             <tr>
                 <th>
@@ -28,43 +28,35 @@
                 <th>
                     Points
                 </th>
-
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Predictions)
             {
-                <tr>
+            <tr>
+                <td>@Html.DisplayFor(ModelItem => item.Fixture.FixtureDateTime) / @Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HomeScore) -
+                    @Html.DisplayFor(modelItem => item.AwayScore)
+                </td>
+                <td>
+                    @if (item.Joker == true) {
+                        @: <span class="joker">J</span>
+                    } 
+                     @if (item.DoubleUp == true) {
+                        @: <span class="x2">x2</span>
+                    } 
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
+                    @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Points)
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Fixture.Home) vs @Html.DisplayFor(modelItem => item.Fixture.Away)
-                        (@Html.DisplayFor(modelItem => item.Fixture.FixtureDateTime))
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HomeScore) -
-                        @Html.DisplayFor(modelItem => item.AwayScore)
-                    </td>
-                    <td>
-                        @if (item.Joker == true)
-                        {
-                            @: <span class="joker">J</span>
-                        }
-                        @if (item.DoubleUp == true)
-                        {
-                            @: <span class="x2">x2</span>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Fixture.HomeScore) -
-                        @Html.DisplayFor(modelItem => item.Fixture.AwayScore)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Points)
-                    </td>
-
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
-
 </div>
