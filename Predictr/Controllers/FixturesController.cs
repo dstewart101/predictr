@@ -25,7 +25,20 @@ namespace Predictr.Controllers
         // GET: Fixtures
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fixtures.OrderBy(f => f.FixtureDateTime).ToListAsync());
+
+            List<Fixture> fixtures = _context.Fixtures.OrderBy(f => f.FixtureDateTime).ToList();
+
+            List<VM_Fixture> vm_fixtures = new List<VM_Fixture>();
+
+            foreach (Fixture fixture in fixtures) {
+                vm_fixtures.Add(new VM_Fixture {
+                    MatchDetails = fixture.FixtureDateTime.ToString("d MMM H:mm") + " / " + fixture.Home + " vs " + fixture.Away,
+                    Score = fixture.HomeScore + " - " + fixture.AwayScore
+                }
+                );
+            }
+
+            return View(vm_fixtures);
         }
 
         // GET: Fixtures/Details/5

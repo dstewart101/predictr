@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Predictr.Models.Fixture>
+﻿@model IEnumerable<Predictr.ViewModels.VM_Fixture>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,31 +6,15 @@
 
 <h2>Index</h2>
 
-<table class="table">
+<table class="table table-condensed table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Group)
+            <th class="col-md-4">
+                Fixture
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FixtureDateTime)
+                Score
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Home)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HomeScore)
-            </th>
-            <th>
-                vs
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AwayScore)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Away)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,26 +22,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Group)
+                    @Html.DisplayFor(modelItem => item.MatchDetails)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FixtureDateTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Home)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HomeScore)
-                </td>
-                <td>
-                    vs
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.AwayScore)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Away)
+                    @Html.DisplayFor(modelItem => item.Score)
                 </td>
             </tr>
         }

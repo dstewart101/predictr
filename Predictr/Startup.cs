@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Predictr.Data;
@@ -37,6 +35,12 @@ namespace Predictr
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            // Require HTTPS across the board
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +67,11 @@ namespace Predictr
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Redirect all HTTP traffic to HTTPS
+            //var options = new RewriteOptions().AddRedirectToHttps();
+
+            //app.UseRewriter(options);
         }
     }
 }
