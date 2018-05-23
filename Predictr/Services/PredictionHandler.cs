@@ -8,7 +8,8 @@ namespace Predictr.Services
 {
     public class PredictionHandler
     {
-
+        private const int CORRECT_SCORE_POINTS = 3;
+        private const int CORRECT_RESULT_POINTS = 1;
         private List<Prediction> _predictions;
         private Fixture _fixture;
         private String _user;
@@ -45,13 +46,13 @@ namespace Predictr.Services
                 // correct score?
                 if (CorrectScore(_prediction, _fixture))
                 {
-                    _prediction.Points = 3;
+                    _prediction.Points = CORRECT_SCORE_POINTS;
                 }
 
                 // correct result
                 else if (CorrectResult(_prediction, _fixture))
                 {
-                    _prediction.Points = 1;
+                    _prediction.Points = CORRECT_RESULT_POINTS;
                 }
 
                 // nothing
@@ -63,7 +64,7 @@ namespace Predictr.Services
                 // joker?
 
                 if (CorrectResult(_prediction, _fixture) && JokerPlayed(_prediction)) {
-                    _prediction.Points = 3;
+                    _prediction.Points = CORRECT_SCORE_POINTS;
                 }
 
                 // double-up
