@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
+using Predictr.Interfaces;
 using Predictr.Models;
 using Predictr.Services;
 using Predictr.ViewModels;
@@ -15,23 +16,25 @@ namespace Predictr.Controllers
 {
     public class FixturesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private IFixtureRepository _fixtureRepository;
 
-        public FixturesController(ApplicationDbContext context)
+        public FixturesController(IFixtureRepository fixtureRepository)
         {
-            _context = context;
+            _fixtureRepository = fixtureRepository;
         }
 
         // GET: Fixtures
         public async Task<IActionResult> Index()
         {
 
-            List<Fixture> fixtures = _context.Fixtures.OrderBy(f => f.FixtureDateTime).ToList();
+            Task<List<Fixture>> fixtures = _fixtureRepository.GetAll();
 
             List<VM_Fixture> vm_fixtures = new List<VM_Fixture>();
 
-            foreach (Fixture fixture in fixtures) {
-                vm_fixtures.Add(new VM_Fixture {
+            foreach (Fixture fixture in await fixtures)
+            {
+                vm_fixtures.Add(new VM_Fixture
+                {
                     MatchDetails = fixture.FixtureDateTime.ToString("d MMM H:mm") + " / " + fixture.Home + " vs " + fixture.Away,
                     Score = fixture.HomeScore + " - " + fixture.AwayScore
                 }
@@ -42,21 +45,16 @@ namespace Predictr.Controllers
         }
 
         // GET: Fixtures/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            Task<Fixture> fixture = _fixtureRepository.GetSingleFixture(id);
 
-            var fixture = await _context.Fixtures
-                .SingleOrDefaultAsync(m => m.Id == id);
             if (fixture == null)
             {
                 return NotFound();
             }
 
-            return View(fixture);
+            return View(await fixture);
         }
 
         [Authorize(Roles="Admin")]
@@ -76,8 +74,8 @@ namespace Predictr.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(fixture);
-                await _context.SaveChangesAsync();
+                _fixtureRepository.Add(fixture);
+                await _fixtureRepository.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Index", "Admin");
@@ -85,28 +83,22 @@ namespace Predictr.Controllers
 
         // GET: Fixtures/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
+            var fixture = _fixtureRepository.GetSingleFixture(id);
             if (fixture == null)
             {
                 return NotFound();
             }
 
             var vm_fixture = new VM_EditFixture();
-            vm_fixture.Home = fixture.Home;
-            vm_fixture.Away = fixture.Away;
-            vm_fixture.HomeScore = fixture.HomeScore;
-            vm_fixture.AwayScore = fixture.AwayScore;
-            vm_fixture.FixtureDateTime = fixture.FixtureDateTime;
-            vm_fixture.Group = fixture.Group;
 
-
+            vm_fixture.Home = fixture.Result.Home;
+            vm_fixture.Away = fixture.Result.Away;
+            vm_fixture.HomeScore = fixture.Result.HomeScore;
+            vm_fixture.AwayScore = fixture.Result.AwayScore;
+            vm_fixture.FixtureDateTime = fixture.Result.FixtureDateTime;
+            vm_fixture.Group = fixture.Result.Group;
 
             return View(vm_fixture);
         }
@@ -122,7 +114,7 @@ namespace Predictr.Controllers
             Boolean scoreHasChanged = false;
 
 
-            var actualFixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
+            var actualFixture = await _fixtureRepository.GetSingleFixture(id);
 
             if (id != actualFixture.Id)
             {
@@ -142,7 +134,7 @@ namespace Predictr.Controllers
                     actualFixture.AwayScore = fixture.AwayScore;
                     actualFixture.Result = fixture.HomeScore + " - " + fixture.AwayScore;
 
-                    _context.Update(actualFixture);
+                    await _fixtureRepository.SaveChanges();
 
                     if (scoreHasChanged)
                     {
@@ -150,7 +142,8 @@ namespace Predictr.Controllers
                         PredictionHandler pp = new PredictionHandler(predictions, actualFixture);
                         predictions = pp.updatePredictions();
                     }
-                    _context.SaveChanges();
+
+                    await _fixtureRepository.SaveChanges();
                 }
 
 
@@ -173,15 +166,9 @@ namespace Predictr.Controllers
         // GET: Fixtures/Delete/5
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var fixture = await _context.Fixtures
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var fixture = _fixtureRepository.GetSingleFixture(id);
             if (fixture == null)
             {
                 return NotFound();
@@ -196,15 +183,15 @@ namespace Predictr.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fixture = await _context.Fixtures.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Fixtures.Remove(fixture);
-            await _context.SaveChangesAsync();
+            var fixture = _fixtureRepository.GetSingleFixture(id);
+            _fixtureRepository.Delete(fixture);
+            await _fixtureRepository.SaveChanges();
             return RedirectToAction("Index", "Admin");
         }
 
         private bool FixtureExists(int id)
         {
-            return _context.Fixtures.Any(e => e.Id == id);
+            return _fixtureRepository.FixtureExists(id);
         }
     }
 }

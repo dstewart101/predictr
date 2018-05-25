@@ -4,6 +4,7 @@ using Predictr.Interfaces;
 using Predictr.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Predictr.Repositories
@@ -25,5 +26,7 @@ namespace Predictr.Repositories
         public Task SaveChanges() => _context.SaveChangesAsync();
 
         public void Delete(Fixture fixture) => _context.Fixtures.Remove(fixture);
+
+        public Boolean FixtureExists(int id) => _context.Fixtures.Any(e => e.Id == id);
     }
 }
