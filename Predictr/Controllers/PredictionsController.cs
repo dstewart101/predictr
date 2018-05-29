@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
+using Predictr.Interfaces;
 using Predictr.Models;
+using Predictr.Repositories;
 using Predictr.Services;
 using Predictr.ViewModels;
 using System;
@@ -15,29 +17,28 @@ namespace Predictr.Controllers
     [Authorize]
     public class PredictionsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private IPredictionRepository _predictionsRepository;
+        private IFixtureRepository _fixturesRepository;
+        private ApplicationDbContext _context;
 
-        public PredictionsController(ApplicationDbContext context)
+        public PredictionsController(IPredictionRepository predictionRepository, IFixtureRepository fixtureRepository, ApplicationDbContext context)
         {
+            _predictionsRepository = predictionRepository;
+            _fixturesRepository = fixtureRepository;
             _context = context;
         }
 
         // GET: Predictions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Predictions.ToListAsync());
+            return View(await _predictionsRepository.GetAll());
         }
 
         // GET: Predictions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var prediction = await _predictionsRepository.GetSinglePrediction(id);
 
-            var prediction = await _context.Predictions.Include("Fixture")
-                .SingleOrDefaultAsync(m => m.Id == id);
             if (prediction == null)
             {
                 return NotFound();
@@ -47,64 +48,55 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Create
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> CreateAsync(int id)
         {
+            VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
 
-            if (id == null)
+            var fixture = await _fixturesRepository.GetSingleFixture(id);
+
+            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var currentPredictions = _context.Predictions.ToList();
+
+            PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            int doublesUsed = ph.CountDoublesPlayed();
+            int jokersUsed = ph.CountJokersPlayed();
+
+
+
+            if (fixture.FixtureDateTime < DateTime.Now)
+            {
+                return RedirectToAction("Index", "MyPredictr");
+            }
+
+            if (fixture == null)
             {
                 return NotFound();
             }
 
+            _thisPrediction.HomeTeam = fixture.Home;
+            _thisPrediction.AwayTeam = fixture.Away;
+
+            if (jokersUsed < 3)
+            {
+                _thisPrediction.JokerDisabled = false;
+            }
             else
             {
-                var _fixtureId = id;
-                VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
-
-                var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == _fixtureId);
-
-                String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-                var currentPredictions = _context.Predictions.ToList();
-
-                PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                int doublesUsed = ph.CountDoublesPlayed();
-                int jokersUsed = ph.CountJokersPlayed();
-
-
-
-                if (fixture.FixtureDateTime < DateTime.Now)
-                {
-                    return RedirectToAction("Index", "MyPredictr");
-                }
-
-                if (fixture == null)
-                {
-                    return NotFound();
-                }
-
-                _thisPrediction.HomeTeam = fixture.Home;
-                _thisPrediction.AwayTeam = fixture.Away;
-
-                if (jokersUsed < 3)
-                {
-                    _thisPrediction.JokerDisabled = false;
-                }
-                else {
-                    _thisPrediction.JokerDisabled = true;
-                }
-
-                if (doublesUsed < 3)
-                {
-                    _thisPrediction.DoubleUpDisabled = false;
-                }
-                else
-                {
-                    _thisPrediction.DoubleUpDisabled = true;
-                }
-                
-                return View(_thisPrediction);
+                _thisPrediction.JokerDisabled = true;
             }
+
+            if (doublesUsed < 3)
+            {
+                _thisPrediction.DoubleUpDisabled = false;
+            }
+            else
+            {
+                _thisPrediction.DoubleUpDisabled = true;
+            }
+
+            return View(_thisPrediction);
         }
 
         // POST: Predictions/Create
@@ -122,9 +114,9 @@ namespace Predictr.Controllers
 
                 String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                
 
-                var currentPredictions = _context.Predictions.ToList();
+
+                var currentPredictions = _predictionsRepository.GetAll();
 
                 PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -172,14 +164,10 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var prediction = await _context.Predictions.Include("Fixture").SingleOrDefaultAsync(m => m.Id == id);
+            var prediction = await _predictionsRepository.GetSinglePrediction(id);
 
             if (prediction == null)
             {
@@ -196,7 +184,7 @@ namespace Predictr.Controllers
                 return Unauthorized();
             }
 
-            
+
             VM_EditPrediction vm = new VM_EditPrediction();
 
             String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -225,7 +213,8 @@ namespace Predictr.Controllers
                 {
                     vm.JokerDisabled = false;
                 }
-                else {
+                else
+                {
                     vm.JokerDisabled = true;
                 }
             }
@@ -259,15 +248,15 @@ namespace Predictr.Controllers
 
             String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var predictionToUpdate = await _context.Predictions.Include("Fixture")
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var predictionToUpdate = await _predictionsRepository.GetSinglePrediction(id);
 
             if (predictionToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (predictionToUpdate.ApplicationUserId != currentUserId) {
+            if (predictionToUpdate.ApplicationUserId != currentUserId)
+            {
                 return Unauthorized();
             }
 
@@ -304,7 +293,8 @@ namespace Predictr.Controllers
                         {
                             predictionToUpdate.Joker = prediction.Joker;
                         }
-                        else {
+                        else
+                        {
                             // back to the offending prediction
                             return RedirectToAction("Edit", "Predictions", new { id }); // redirect to create prediction
                         }
@@ -331,7 +321,7 @@ namespace Predictr.Controllers
                     predictionToUpdate.DoubleUp = prediction.DoubleUp;
 
                     _context.Update(predictionToUpdate);
-                    await _context.SaveChangesAsync();
+                    await _predictionsRepository.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
