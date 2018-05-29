@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Predictr.Data;
+using Predictr.Interfaces;
 using Predictr.Models;
+using Predictr.Repositories;
 using Predictr.Services;
 
 namespace Predictr
@@ -41,6 +43,8 @@ namespace Predictr
             //{
             //    options.Filters.Add(new RequireHttpsAttribute());
             //});
+
+            services.AddScoped<IFixtureRepository, FixturesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

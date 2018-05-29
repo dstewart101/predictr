@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
 using Predictr.Interfaces;
 using Predictr.Models;
 using Predictr.Services;
 using Predictr.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Predictr.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FixturesController : Controller
     {
         private IFixtureRepository _fixtureRepository;
+        private ApplicationDbContext _context;
 
-        public FixturesController(IFixtureRepository fixtureRepository)
+        public FixturesController(IFixtureRepository fixtureRepository, ApplicationDbContext context)
         {
             _fixtureRepository = fixtureRepository;
+            _context = context;
         }
 
         // GET: Fixtures
@@ -113,7 +115,6 @@ namespace Predictr.Controllers
         {
             Boolean scoreHasChanged = false;
 
-
             var actualFixture = await _fixtureRepository.GetSingleFixture(id);
 
             if (id != actualFixture.Id)
@@ -174,7 +175,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            return View(fixture);
+            return View(await fixture);
         }
 
         // POST: Fixtures/Delete/5
@@ -183,7 +184,7 @@ namespace Predictr.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fixture = _fixtureRepository.GetSingleFixture(id);
+            var fixture = await _fixtureRepository.GetSingleFixture(id);
             _fixtureRepository.Delete(fixture);
             await _fixtureRepository.SaveChanges();
             return RedirectToAction("Index", "Admin");
