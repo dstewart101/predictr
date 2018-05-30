@@ -17,12 +17,12 @@ namespace Predictr.Controllers
     public class FixturesController : Controller
     {
         private IFixtureRepository _fixtureRepository;
-        private ApplicationDbContext _context;
+        private IPredictionRepository _predictionRepository;
 
-        public FixturesController(IFixtureRepository fixtureRepository, ApplicationDbContext context)
+        public FixturesController(IFixtureRepository fixtureRepository, IPredictionRepository predictionRepository)
         {
             _fixtureRepository = fixtureRepository;
-            _context = context;
+            _predictionRepository = predictionRepository;
         }
 
         // GET: Fixtures
@@ -139,7 +139,7 @@ namespace Predictr.Controllers
 
                     if (scoreHasChanged)
                     {
-                        var predictions = _context.Predictions.Where(p => p.FixtureId == actualFixture.Id).ToList();
+                        var predictions = await _predictionRepository.GetPredictionsToUpdate(actualFixture.Id);
                         PredictionHandler pp = new PredictionHandler(predictions, actualFixture);
                         predictions = pp.updatePredictions();
                     }

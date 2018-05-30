@@ -19,13 +19,11 @@ namespace Predictr.Controllers
     {
         private IPredictionRepository _predictionsRepository;
         private IFixtureRepository _fixturesRepository;
-        private ApplicationDbContext _context;
 
-        public PredictionsController(IPredictionRepository predictionRepository, IFixtureRepository fixtureRepository, ApplicationDbContext context)
+        public PredictionsController(IPredictionRepository predictionRepository, IFixtureRepository fixtureRepository)
         {
             _predictionsRepository = predictionRepository;
             _fixturesRepository = fixtureRepository;
-            _context = context;
         }
 
         // GET: Predictions
@@ -56,7 +54,7 @@ namespace Predictr.Controllers
 
             String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var currentPredictions = _context.Predictions.ToList();
+            var currentPredictions = await _predictionsRepository.GetAll();
 
             PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -116,14 +114,14 @@ namespace Predictr.Controllers
 
 
 
-                var currentPredictions = _predictionsRepository.GetAll();
+                var currentPredictions = await _predictionsRepository.GetAll();
 
                 PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
                 int doublesUsed = ph.CountDoublesPlayed();
                 int jokersUsed = ph.CountJokersPlayed();
 
-                var fixture = _context.Fixtures.SingleOrDefault(f => f.Id == id);
+                var fixture = await _fixturesRepository.GetSingleFixture(id);
 
                 if (fixture.FixtureDateTime < DateTime.Now)
                 {
@@ -156,8 +154,9 @@ namespace Predictr.Controllers
                     return RedirectToAction("Create", "Predictions", new { id });
                 }
 
-                _context.Add(_fullPrediction);
-                await _context.SaveChangesAsync();
+                
+                _predictionsRepository.Add(_fullPrediction);
+                await _predictionsRepository.SaveChanges();
                 return RedirectToAction("Index", "MyPredictr");
             }
             return View(prediction);
@@ -189,7 +188,7 @@ namespace Predictr.Controllers
 
             String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var currentPredictions = _context.Predictions.ToList();
+            var currentPredictions = await _predictionsRepository.GetAll();
             PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
 
@@ -272,7 +271,7 @@ namespace Predictr.Controllers
 
 
 
-                    var currentPredictions = _context.Predictions.ToList();
+                    var currentPredictions = await _predictionsRepository.GetAll();
 
                     PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -320,7 +319,7 @@ namespace Predictr.Controllers
                     predictionToUpdate.Joker = prediction.Joker;
                     predictionToUpdate.DoubleUp = prediction.DoubleUp;
 
-                    _context.Update(predictionToUpdate);
+                    _predictionsRepository.Update(predictionToUpdate);
                     await _predictionsRepository.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -340,15 +339,9 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var prediction = await _context.Predictions
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var prediction = await _predictionsRepository.GetSinglePrediction(id);
             if (prediction == null)
             {
                 return NotFound();
@@ -362,15 +355,15 @@ namespace Predictr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var prediction = await _context.Predictions.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Predictions.Remove(prediction);
-            await _context.SaveChangesAsync();
+            var prediction = await _predictionsRepository.GetSinglePrediction(id);
+            _predictionsRepository.Delete(prediction);
+            await _predictionsRepository.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PredictionExists(int id)
         {
-            return _context.Predictions.Any(e => e.Id == id);
+            return _predictionsRepository.PredictionExists(id);
         }
     }
 }
