@@ -12,9 +12,9 @@ namespace Predictr.Data
         public static void Initialize(ApplicationDbContext context)
         {
 
-            
+
             //context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
 
             // create the two roles
 
@@ -25,7 +25,7 @@ namespace Predictr.Data
                 roleStore.CreateAsync(new IdentityRole("Admin"));
                 roleStore.CreateAsync(new IdentityRole("Player"));
             }
-            
+
 
             // Look for any students.
             if (!context.Teams.Any())
