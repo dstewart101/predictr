@@ -19,11 +19,13 @@ namespace Predictr.Controllers
     {
         private IPredictionRepository _predictionsRepository;
         private IFixtureRepository _fixturesRepository;
+        private IUserProvider _userProvider;
 
-        public PredictionsController(IPredictionRepository predictionRepository, IFixtureRepository fixtureRepository)
+        public PredictionsController(IPredictionRepository predictionRepository, IFixtureRepository fixtureRepository, IUserProvider userProvider)
         {
             _predictionsRepository = predictionRepository;
             _fixturesRepository = fixtureRepository;
+            _userProvider = userProvider;
         }
 
         // GET: Predictions
@@ -46,22 +48,18 @@ namespace Predictr.Controllers
         }
 
         // GET: Predictions/Create
-        public async Task<IActionResult> CreateAsync(int id)
+        public async Task<IActionResult> Create(int id)
         {
             VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
 
             var fixture = await _fixturesRepository.GetSingleFixture(id);
 
-            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var currentPredictions = await _predictionsRepository.GetAll();
 
-            PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
 
             int doublesUsed = ph.CountDoublesPlayed();
             int jokersUsed = ph.CountJokersPlayed();
-
-
 
             if (fixture.FixtureDateTime < DateTime.Now)
             {
@@ -110,13 +108,11 @@ namespace Predictr.Controllers
 
                 Prediction _fullPrediction = new Prediction();
 
-                String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-
+                String currentUserId = _userProvider.GetUserId();
 
                 var currentPredictions = await _predictionsRepository.GetAll();
 
-                PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                PredictionHandler ph = new PredictionHandler(currentPredictions, currentUserId);
 
                 int doublesUsed = ph.CountDoublesPlayed();
                 int jokersUsed = ph.CountJokersPlayed();
@@ -178,7 +174,7 @@ namespace Predictr.Controllers
                 return RedirectToAction("Index", "MyPredictr");
             }
 
-            if (prediction.ApplicationUserId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            if (prediction.ApplicationUserId != _userProvider.GetUserId())
             {
                 return Unauthorized();
             }
@@ -186,10 +182,8 @@ namespace Predictr.Controllers
 
             VM_EditPrediction vm = new VM_EditPrediction();
 
-            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var currentPredictions = await _predictionsRepository.GetAll();
-            PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
 
 
             int doublesUsed = ph.CountDoublesPlayed();
@@ -244,9 +238,6 @@ namespace Predictr.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, VM_EditPrediction prediction)
         {
-
-            String currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
             var predictionToUpdate = await _predictionsRepository.GetSinglePrediction(id);
 
             if (predictionToUpdate == null)
@@ -254,7 +245,7 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            if (predictionToUpdate.ApplicationUserId != currentUserId)
+            if (predictionToUpdate.ApplicationUserId != _userProvider.GetUserId())
             {
                 return Unauthorized();
             }
@@ -269,11 +260,9 @@ namespace Predictr.Controllers
                 try
                 {
 
-
-
                     var currentPredictions = await _predictionsRepository.GetAll();
 
-                    PredictionHandler ph = new PredictionHandler(currentPredictions, User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
 
                     int doublesUsed = ph.CountDoublesPlayed();
                     int jokersUsed = ph.CountJokersPlayed();
