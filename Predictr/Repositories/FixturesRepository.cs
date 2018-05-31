@@ -19,7 +19,7 @@ namespace Predictr.Repositories
 
         public Task<List<Fixture>> GetAll() => _context.Fixtures.ToListAsync();
 
-        public Task<Fixture> GetSingleFixture(int id) => _context.Fixtures.SingleOrDefaultAsync(f => f.Id == id);
+        public Task<Fixture> GetSingleFixture(int? id) => _context.Fixtures.SingleOrDefaultAsync(f => f.Id == id);
 
         public void Add(Fixture fixture) => _context.Add(fixture);
 

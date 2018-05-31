@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictr", "Predictr\Predictr.csproj", "{53435363-7033-4C26-AF6E-159C36188310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Predictr", "Predictr\Predictr.csproj", "{53435363-7033-4C26-AF6E-159C36188310}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictr.Tests", "Predictr.Tests\Predictr.Tests.csproj", "{C1256D65-2423-44E1-A60F-073B4F9A92BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{53435363-7033-4C26-AF6E-159C36188310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53435363-7033-4C26-AF6E-159C36188310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53435363-7033-4C26-AF6E-159C36188310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1256D65-2423-44E1-A60F-073B4F9A92BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1256D65-2423-44E1-A60F-073B4F9A92BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1256D65-2423-44E1-A60F-073B4F9A92BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1256D65-2423-44E1-A60F-073B4F9A92BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

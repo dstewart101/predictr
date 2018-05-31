@@ -47,11 +47,14 @@ namespace Predictr.Controllers
         }
 
         // GET: Fixtures/Details/5
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
+            if (id == null) {
+                return NotFound();
+            }
             Task<Fixture> fixture = _fixtureRepository.GetSingleFixture(id);
 
-            if (fixture == null)
+            if (await fixture == null)
             {
                 return NotFound();
             }
@@ -88,7 +91,7 @@ namespace Predictr.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var fixture = _fixtureRepository.GetSingleFixture(id);
-            if (fixture == null)
+            if (await fixture == null)
             {
                 return NotFound();
             }

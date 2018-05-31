@@ -8,7 +8,7 @@ namespace Predictr.Interfaces
     public interface IFixtureRepository
     {
         Task<List<Fixture>> GetAll();
-        Task<Fixture> GetSingleFixture(int id);
+        Task<Fixture> GetSingleFixture(int? id);
         void Add(Fixture fixture);
         void Delete(Fixture fixture);
         Boolean FixtureExists(int id);
