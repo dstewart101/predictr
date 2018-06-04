@@ -71,6 +71,9 @@ namespace Predictr.Tests.Controllers
         [Fact]
         public async Task DetailsTest_ReturnsNotFound_WhenNoIdProvided()
         {
+            // Arrange
+            // Controller created already
+
             // Act
             var result = await controller.Details(null);
 
@@ -98,6 +101,9 @@ namespace Predictr.Tests.Controllers
         // get create
         [Fact]
         public void CreateTest_ReturnsViewWhenCreatingFixture() {
+            // Arrange
+            // Controller created already in constructor
+
             // Act
             var result = controller.Create();
 
@@ -143,8 +149,46 @@ namespace Predictr.Tests.Controllers
         }
 
         // get edit
+        [Fact]
+        public async Task EditTest_ReturnViewWithSingleFixture_WhenFixtureExists()
+        {
 
-        // post edit
+            // Arrange
+            var fixture = new Fixture { Id = 12, Group = "A", FixtureDateTime = DateTime.Now, Home = "Brazil", Away = "Germany", HomeScore = 1, AwayScore = 1 };
+
+            fixturesRepoMock
+                .Setup(repo => repo.GetSingleFixture(fixture.Id))
+                .Returns(Task.FromResult(fixture));
+
+            // Act
+            var result = await controller.Edit(fixture.Id);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<VM_EditFixture>(viewResult.ViewData.Model);
+            Assert.Equal("Edit", viewResult.ViewName);
+        }
+
+        // get edit where no fixture exists
+        [Fact]
+        public async Task EditTest_ReturnsNotFound_WhenNoFixtureExists()
+        {
+            // Arrange
+            var mockId = 42;
+            fixturesRepoMock
+                .Setup(repo => repo.GetSingleFixture(mockId))
+                .Returns(Task.FromResult<Fixture>(null));
+
+            // Act
+            var result = await controller.Edit(42);
+
+            // Assert
+            var viewResult = Assert.IsType<NotFoundResult>(result);
+        }
+
+        // post edit when invalid
+
+        // post edit when valid
 
         // get delete
 
