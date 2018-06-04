@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin")]
     public class FixturesController : Controller
     {

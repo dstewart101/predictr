@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {

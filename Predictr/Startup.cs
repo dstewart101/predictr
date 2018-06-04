@@ -39,10 +39,10 @@ namespace Predictr
             services.AddMvc();
 
             // Require HTTPS across the board
-            //services.Configure<MvcOptions>(options =>
-            //{
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
 
             services.AddScoped<IFixtureRepository, FixturesRepository>();
             services.AddScoped<IPredictionRepository, PredictionsRepository>();

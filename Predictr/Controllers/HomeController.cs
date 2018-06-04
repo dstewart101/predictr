@@ -8,6 +8,7 @@ using Predictr.Models;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public IActionResult Index()

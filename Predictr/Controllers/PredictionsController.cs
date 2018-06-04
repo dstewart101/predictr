@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class PredictionsController : Controller
     {

@@ -16,6 +16,7 @@ using Predictr.Services;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     [Authorize]
     [Route("[controller]/[action]")]
     public class ManageController : Controller

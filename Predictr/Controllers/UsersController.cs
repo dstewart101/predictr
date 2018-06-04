@@ -12,6 +12,7 @@ using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext _context;

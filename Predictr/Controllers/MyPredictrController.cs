@@ -13,6 +13,7 @@ using Predictr.ViewModels;
 
 namespace Predictr.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class MyPredictrController : Controller
     {
