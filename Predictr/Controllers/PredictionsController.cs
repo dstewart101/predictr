@@ -52,7 +52,6 @@ namespace Predictr.Controllers
         // GET: Predictions/Create
         public async Task<IActionResult> Create(int id)
         {
-            VM_CreatePrediction _thisPrediction = new VM_CreatePrediction();
 
             var fixture = await _fixturesRepository.GetSingleFixture(id);
 
@@ -70,9 +69,9 @@ namespace Predictr.Controllers
 
             PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
 
-            _thisPrediction = ph.BuildCreateVMPrediction();
+            VM_CreatePrediction _vm = ph.BuildCreateVMPrediction();
 
-            return View("Create", _thisPrediction);
+            return View("Create", _vm);
         }
 
         // POST: Predictions/Create
