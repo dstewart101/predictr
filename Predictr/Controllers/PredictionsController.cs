@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Predictr.Data;
 using Predictr.Interfaces;
+using Predictr.Mappers;
 using Predictr.Models;
 using Predictr.Repositories;
 using Predictr.Services;
@@ -55,13 +56,6 @@ namespace Predictr.Controllers
 
             var fixture = await _fixturesRepository.GetSingleFixture(id);
 
-            var currentPredictions = await _predictionsRepository.GetAll();
-
-            PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
-
-            int doublesUsed = ph.CountDoublesPlayed();
-            int jokersUsed = ph.CountJokersPlayed();
-
             if (fixture.FixtureDateTime < DateTime.Now)
             {
                 return RedirectToAction("Index", "MyPredictr");
@@ -72,28 +66,13 @@ namespace Predictr.Controllers
                 return NotFound();
             }
 
-            _thisPrediction.HomeTeam = fixture.Home;
-            _thisPrediction.AwayTeam = fixture.Away;
+            var currentPredictions = await _predictionsRepository.GetAll();
 
-            if (jokersUsed < 3)
-            {
-                _thisPrediction.JokerDisabled = false;
-            }
-            else
-            {
-                _thisPrediction.JokerDisabled = true;
-            }
+            PredictionHandler ph = new PredictionHandler(currentPredictions, _userProvider.GetUserId());
 
-            if (doublesUsed < 3)
-            {
-                _thisPrediction.DoubleUpDisabled = false;
-            }
-            else
-            {
-                _thisPrediction.DoubleUpDisabled = true;
-            }
+            _thisPrediction = ph.BuildCreateVMPrediction();
 
-            return View(_thisPrediction);
+            return View("Create", _thisPrediction);
         }
 
         // POST: Predictions/Create

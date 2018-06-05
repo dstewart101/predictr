@@ -1,4 +1,5 @@
 ﻿using Predictr.Models;
+using Predictr.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,6 +126,39 @@ namespace Predictr.Services
                         .Where(p => p.ApplicationUserId == _user)
                         .Where(p => p.Joker == true)
                         .Count();
+        }
+
+        public VM_CreatePrediction BuildCreateVMPrediction() {
+
+            VM_CreatePrediction vm = new VM_CreatePrediction();
+
+            int doublesUsed = CountDoublesPlayed();
+            int jokersUsed = CountJokersPlayed();
+
+
+
+            vm.HomeTeam = _fixture.Home;
+            vm.AwayTeam = _fixture.Away;
+
+            if (jokersUsed < 3)
+            {
+                vm.JokerDisabled = false;
+            }
+            else
+            {
+                vm.JokerDisabled = true;
+            }
+
+            if (doublesUsed < 3)
+            {
+                vm.DoubleUpDisabled = false;
+            }
+            else
+            {
+                vm.DoubleUpDisabled = true;
+            }
+
+            return vm;
         }
     }
 }

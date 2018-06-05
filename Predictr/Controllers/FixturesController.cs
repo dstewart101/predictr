@@ -67,7 +67,7 @@ namespace Predictr.Controllers
         // GET: Fixtures/Create
         public IActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         // POST: Fixtures/Create
@@ -106,7 +106,7 @@ namespace Predictr.Controllers
             vm_fixture.FixtureDateTime = fixture.Result.FixtureDateTime;
             vm_fixture.Group = fixture.Result.Group;
 
-            return View(vm_fixture);
+            return View("Edit", vm_fixture);
         }
 
         // POST: Fixtures/Edit/5
